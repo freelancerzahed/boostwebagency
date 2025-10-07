@@ -1,0 +1,35 @@
+[
+  {
+    "name": "Steve Johnson",
+    "position": "Chief Executive Officer",
+    "image": "/images/team/member-1.jpg",
+    "bio": "Visionary leader with 10+ years in digital marketing and business strategy.",
+    "social": {
+      "linkedin": "#",
+      "twitter": "#",
+      "facebook": "#"
+    }
+  },
+  {
+    "name": "Olivia Jackson",
+    "position": "Creative Director",
+    "image": "/images/team/member-2.jpg",
+    "bio": "Award-winning designer specializing in brand identity and user experience.",
+    "social": {
+      "linkedin": "#",
+      "twitter": "#",
+      "instagram": "#"
+    }
+  },
+  {
+    "name": "Tamerlan Aziev",
+    "position": "Lead Developer",
+    "image": "/images/team/member-3.jpg",
+    "bio": "Full-stack developer with expertise in modern web technologies.",
+    "social": {
+      "linkedin": "#",
+      "github": "#",
+      "twitter": "#"
+    }
+  }
+]

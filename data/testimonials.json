@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "name": "Sonny Arcot",
+    "position": "CEO, Arcot Group",
+    "image": "/images/testimonials/client-1.jpg",
+    "content": "Working with Boost Web Agency has been a game-changer for our business. Their expertise in digital marketing and web development transformed our online presence and significantly boosted our sales. The team is professional, creative, and dedicated to delivering results. Highly recommended!",
+    "rating": 5
+  },
+  {
+    "id": 2,
+    "name": "Younesszouiri",
+    "position": "CEO & Founder, Selia",
+    "image": "/images/testimonials/client-2.jpg",
+    "content": "Our experience with Boost Web Agency has been exceptional. Their expertise in Facebook boosting and Google Ads brought a significant increase in our lead generation. They are truly the best at what they do!",
+    "rating": 5
+  },
+  {
+    "id": 3,
+    "name": "C Bella",
+    "position": "CEO & Founder, Mirror Me Fashion",
+    "image": "/images/testimonials/client-3.jpg",
+    "content": "We've seen a remarkable boost in our online visibility since partnering with Boost Web Agency. Their team is professional, responsive, and results-driven. The e-commerce solutions they provided have streamlined our operations beautifully.",
+    "rating": 5
+  }
+]

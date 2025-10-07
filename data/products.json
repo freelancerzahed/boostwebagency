@@ -1,0 +1,254 @@
+[
+  {
+    "id": "1",
+    "name": "Modern E-commerce Website Template",
+    "description": "Fully responsive e-commerce template with admin panel, payment integration, and modern design. Perfect for online stores, digital marketplaces, and business websites.",
+    "price": 99,
+    "originalPrice": 149,
+    "image": "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=400&h=300&fit=crop",
+    "category": "web-templates",
+    "rating": 4.8,
+    "reviews": 124,
+    "tags": ["React", "Next.js", "Tailwind", "TypeScript", "Stripe"],
+    "featured": true,
+    "inStock": true,
+    "gallery": [
+      "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1551650975-87deedd944c3?w=800&h=600&fit=crop"
+    ],
+    "features": [
+      "Fully Responsive Design",
+      "Admin Dashboard Included",
+      "Payment Gateway Integration",
+      "SEO Optimized",
+      "Mobile App Ready",
+      "24/7 Support Included",
+      "Free Updates for 1 Year",
+      "Documentation Included"
+    ],
+    "specifications": {
+      "File Format": "React/Next.js Project",
+      "File Size": "45 MB",
+      "Version": "2.1.0",
+      "Last Updated": "December 2024",
+      "Browser Support": "All Modern Browsers",
+      "Mobile Support": "iOS & Android",
+      "Documentation": "Included",
+      "Support": "6 Months Free"
+    },
+    "whatYouGet": [
+      "Complete Source Code",
+      "Admin Panel",
+      "User Dashboard",
+      "Payment Integration",
+      "Email Templates",
+      "Documentation",
+      "Video Tutorials",
+      "Figma Design Files"
+    ],
+    "requirements": ["Node.js 18+", "Basic React Knowledge", "Code Editor (VS Code recommended)", "Modern Web Browser"],
+    "demoUrl": "https://demo.example.com",
+    "videoUrl": "https://www.youtube.com/embed/dQw4w9WgXcQ"
+  },
+  {
+    "id": "2",
+    "name": "Digital Marketing Course Bundle",
+    "description": "Complete digital marketing course with certificates, video tutorials, and practical exercises. Learn SEO, social media marketing, and analytics.",
+    "price": 199,
+    "originalPrice": 299,
+    "image": "https://images.unsplash.com/photo-1460925895917-afdab27c52f?w=400&h=300&fit=crop",
+    "category": "courses",
+    "rating": 4.9,
+    "reviews": 89,
+    "tags": ["SEO", "Social Media", "Analytics", "Marketing"],
+    "featured": true,
+    "inStock": true,
+    "gallery": [
+      "https://images.unsplash.com/photo-1460925895917-afdab27c52f?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1522204523234-87295a78f598?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1542740348-3d030204037a?w=800&h=600&fit=crop"
+    ],
+    "features": [
+      "20+ Hours of Video Content",
+      "Practical Exercises",
+      "Certificate of Completion",
+      "Lifetime Access",
+      "Community Support",
+      "Regular Updates"
+    ],
+    "specifications": {
+      "Format": "Video Course + PDFs",
+      "Duration": "20+ Hours",
+      "Language": "English",
+      "Level": "Beginner to Advanced"
+    },
+    "whatYouGet": [
+      "Video Tutorials",
+      "Course Materials",
+      "Templates & Tools",
+      "Certificate",
+      "Community Access",
+      "Lifetime Updates"
+    ],
+    "requirements": ["Internet Connection", "Basic Computer Skills"],
+    "demoUrl": "https://demo.example.com/course",
+    "videoUrl": "https://www.youtube.com/embed/dQw4w9WgXcQ"
+  },
+  {
+    "id": "3",
+    "name": "Mobile App UI Kit",
+    "description": "Premium mobile app UI components and screens for iOS and Android. Includes Figma files, Sketch files, and Adobe XD files.",
+    "price": 79,
+    "originalPrice": 120,
+    "image": "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=400&h=300&fit=crop",
+    "category": "mobile-apps",
+    "rating": 4.7,
+    "reviews": 156,
+    "tags": ["Figma", "Sketch", "Adobe XD", "iOS", "Android"],
+    "featured": false,
+    "inStock": true,
+    "gallery": [
+      "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1550009158-9ebf69173e03?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1587440871875-191322ee64b0?w=800&h=600&fit=crop"
+    ],
+    "features": [
+      "100+ UI Components",
+      "50+ App Screens",
+      "Dark & Light Themes",
+      "Figma Components",
+      "Sketch Symbols",
+      "Adobe XD Assets"
+    ],
+    "specifications": {
+      "File Format": "Figma, Sketch, Adobe XD",
+      "Components": "100+",
+      "Screens": "50+",
+      "Themes": "Light & Dark"
+    },
+    "whatYouGet": ["Figma File", "Sketch File", "Adobe XD File", "Design System", "Icon Pack", "Documentation"],
+    "requirements": ["Figma, Sketch, or Adobe XD software"],
+    "demoUrl": "https://demo.example.com/ui-kit",
+    "videoUrl": null
+  },
+  {
+    "id": "4",
+    "name": "Logo Design Package",
+    "description": "Professional logo design with brand guidelines, business cards, and marketing materials. Perfect for startups and businesses.",
+    "price": 149,
+    "originalPrice": 200,
+    "image": "https://images.unsplash.com/photo-1561070791-2526d30994b5?w=400&h=300&fit=crop",
+    "category": "graphics",
+    "rating": 4.6,
+    "reviews": 78,
+    "tags": ["Branding", "Logo", "Identity", "Business Cards"],
+    "featured": false,
+    "inStock": true,
+    "gallery": [
+      "https://images.unsplash.com/photo-1561070791-2526d30994b5?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1561070791-2526d30994b5?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1561070791-2526d30994b5?w=800&h=600&fit=crop"
+    ],
+    "features": [
+      "Custom Logo Design",
+      "Brand Guidelines",
+      "Business Card Design",
+      "Letterhead Design",
+      "Social Media Kit",
+      "Vector Files Included"
+    ],
+    "specifications": {
+      "File Format": "AI, EPS, PNG, JPG, PDF",
+      "Revisions": "Unlimited",
+      "Delivery": "3-5 Business Days",
+      "Commercial Use": "Included"
+    },
+    "whatYouGet": [
+      "Logo Design",
+      "Brand Guidelines",
+      "Business Cards",
+      "Letterhead",
+      "Social Media Kit",
+      "Vector Files"
+    ],
+    "requirements": ["Client brief and preferences"],
+    "demoUrl": null,
+    "videoUrl": null
+  },
+  {
+    "id": "5",
+    "name": "WordPress SEO Plugin",
+    "description": "Advanced SEO plugin for WordPress websites with keyword optimization, meta tags, and analytics integration.",
+    "price": 59,
+    "originalPrice": 89,
+    "image": "https://images.unsplash.com/photo-1432888622747-4eb9a8efeb07?w=400&h=300&fit=crop",
+    "category": "plugins",
+    "rating": 4.5,
+    "reviews": 203,
+    "tags": ["WordPress", "SEO", "Analytics", "Plugin"],
+    "featured": false,
+    "inStock": true,
+    "gallery": [
+      "https://images.unsplash.com/photo-1432888622747-4eb9a8efeb07?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=800&h=600&fit=crop"
+    ],
+    "features": [
+      "Keyword Optimization",
+      "Meta Tag Management",
+      "XML Sitemap Generation",
+      "Analytics Integration",
+      "Schema Markup",
+      "Performance Monitoring"
+    ],
+    "specifications": {
+      "WordPress Version": "5.0+",
+      "PHP Version": "7.4+",
+      "License": "GPL v2",
+      "Support": "1 Year"
+    },
+    "whatYouGet": ["Plugin Files", "Installation Guide", "User Manual", "Video Tutorials", "Email Support", "Updates"],
+    "requirements": ["WordPress website"],
+    "demoUrl": null,
+    "videoUrl": null
+  },
+  {
+    "id": "6",
+    "name": "Social Media Graphics Pack",
+    "description": "1000+ social media templates and graphics for Instagram, Facebook, Twitter, and LinkedIn. Includes Canva templates.",
+    "price": 39,
+    "originalPrice": 69,
+    "image": "https://images.unsplash.com/photo-1611224923853-80b023f02d71?w=400&h=300&fit=crop",
+    "category": "graphics",
+    "rating": 4.4,
+    "reviews": 167,
+    "tags": ["Instagram", "Facebook", "Twitter", "Canva"],
+    "featured": false,
+    "inStock": true,
+    "gallery": [
+      "https://images.unsplash.com/photo-1611224923853-80b023f02d71?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1611224923853-80b023f02d71?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1611224923853-80b023f02d71?w=800&h=600&fit=crop"
+    ],
+    "features": [
+      "1000+ Templates",
+      "Instagram Stories",
+      "Facebook Posts",
+      "Twitter Headers",
+      "LinkedIn Banners",
+      "Canva Templates"
+    ],
+    "specifications": {
+      "File Format": "PSD, PNG, JPG, Canva",
+      "Templates": "1000+",
+      "Platforms": "All Major Social Media",
+      "Resolution": "High Resolution"
+    },
+    "whatYouGet": ["PSD Files", "PNG Files", "JPG Files", "Canva Templates", "Font List", "Usage Guide"],
+    "requirements": ["Canva account (for Canva templates)", "Adobe Photoshop (for PSD files)"],
+    "demoUrl": null,
+    "videoUrl": null
+  }
+]
