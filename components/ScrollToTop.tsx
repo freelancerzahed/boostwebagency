@@ -7,7 +7,8 @@ export default function ScrollToTop() {
   const pathname = usePathname()
 
   useEffect(() => {
-    window.scrollTo({ top: 0, behavior: "smooth" })
+    // Instant scroll to top without animation for better performance
+    window.scrollTo(0, 0)
   }, [pathname])
 
   return null

@@ -27,7 +27,7 @@ const projects = [
     title: "E-commerce Website - Selia",
     category: ["web-development", "ecommerce"],
     description: "Modern e-commerce platform with seamless shopping experience and secure payment integration",
-    image: "/modern-ecommerce-website-shopping-online-store.jpg",
+    image: "/portfolio/modern-ecommerce-website-shopping-online-store.jpg",
     link: "https://selia.ma/",
   },
   {
@@ -35,7 +35,7 @@ const projects = [
     title: "Digital Marketing Campaign",
     category: ["digital-marketing"],
     description: "Comprehensive digital marketing strategy driving 300% increase in engagement",
-    image: "/digital-marketing-social-media-campaign-analytics.jpg",
+    image: "/portfolio/digital-marketing-social-media-campaign-analytics.jpg",
     link: "#",
   },
   {
@@ -43,7 +43,7 @@ const projects = [
     title: "Corporate Website",
     category: ["web-development"],
     description: "Professional corporate website with modern design and optimized performance",
-    image: "/professional-corporate-business-website-design.jpg",
+    image: "/portfolio/professional-corporate-business-website-design.jpg",
     link: "https://timesdigitalbd.com/",
   },
   {
@@ -51,7 +51,7 @@ const projects = [
     title: "Brand Identity Design",
     category: ["logo-design"],
     description: "Complete brand identity package including logo, color palette, and brand guidelines",
-    image: "/modern-logo-design-brand-identity-creative.jpg",
+    image: "/portfolio/modern-logo-design-brand-identity-creative.jpg",
     link: "#",
   },
   {
@@ -59,7 +59,7 @@ const projects = [
     title: "E-commerce Platform",
     category: ["web-development", "ecommerce"],
     description: "Full-featured online marketplace with vendor management and advanced analytics",
-    image: "/ecommerce-platform-online-marketplace-shopping-car.jpg",
+    image: "/portfolio/ecommerce-platform-online-marketplace-shopping-car.jpg",
     link: "#",
   },
   {
@@ -67,7 +67,7 @@ const projects = [
     title: "Social Media Campaign",
     category: ["digital-marketing"],
     description: "Multi-platform social media strategy with viral content and influencer partnerships",
-    image: "/social-media-marketing-instagram-facebook-campaign.jpg",
+    image: "/portfolio/social-media-marketing-instagram-facebook-campaign.jpg",
     link: "#",
   },
   {
@@ -75,7 +75,7 @@ const projects = [
     title: "Mobile App Development",
     category: ["web-development", "mobile-apps"],
     description: "Cross-platform mobile application with intuitive UI and real-time features",
-    image: "/mobile-app-development.jpg",
+    image: "/portfolio/mobile-app-development.jpg",
     link: "#",
   },
   {
@@ -83,7 +83,7 @@ const projects = [
     title: "SEO Optimization",
     category: ["digital-marketing"],
     description: "Complete SEO overhaul resulting in first-page rankings for key search terms",
-    image: "/seo-optimization-search-engine-ranking-analytics.jpg",
+    image: "/portfolio/seo-optimization-search-engine-ranking-analytics.jpg",
     link: "#",
   },
   {
@@ -91,7 +91,7 @@ const projects = [
     title: "Custom Software Solution",
     category: ["web-development"],
     description: "Tailored enterprise software solution streamlining business operations",
-    image: "/custom-software-dashboard.png",
+    image: "/portfolio/custom-software-dashboard.png",
     link: "#",
   },
   {
@@ -99,7 +99,7 @@ const projects = [
     title: "User Interface Redesign",
     category: ["ui-ux-design"],
     description: "Complete UI/UX redesign improving user satisfaction by 85%",
-    image: "/ui-ux-design-user-interface-modern-app-design.jpg",
+    image: "/portfolio/ui-ux-design-user-interface-modern-app-design.jpg",
     link: "#",
   },
 ]

@@ -4,9 +4,12 @@ import { Inter } from "next/font/google"
 import "./globals.css"
 import { ThemeProvider } from "@/components/theme-provider"
 import { AuthProvider } from "@/hooks/useAuth"
-import ScrollToTop from "@/components/ScrollToTop"
 
-const inter = Inter({ subsets: ["latin"] })
+const inter = Inter({ 
+  subsets: ["latin"],
+  display: "swap",
+  preload: true,
+})
 
 export const metadata: Metadata = {
   title: "Boost Web Agency - Professional Web Development & Digital Marketing",
@@ -30,7 +33,10 @@ export const metadata: Metadata = {
     title: "Boost Web Agency - Professional Web Development & Digital Marketing",
     description: "Professional web development, digital marketing, and e-commerce solutions",
   },
-
+  alternates: {
+    canonical: "https://boostwebagency.com",
+  },
+  metadataBase: new URL("https://boostwebagency.com"),
 }
 
 export default function RootLayout({
@@ -41,9 +47,13 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={inter.className}>
-        <ThemeProvider attribute="class" defaultTheme="light" enableSystem disableTransitionOnChange={false}>
+        <ThemeProvider 
+          attribute="class" 
+          defaultTheme="light" 
+          enableSystem 
+          disableTransitionOnChange={false}
+        >
           <AuthProvider>
-            <ScrollToTop />
             {children}
           </AuthProvider>
         </ThemeProvider>

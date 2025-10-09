@@ -3,6 +3,7 @@ const nextConfig = {
   // Performance optimizations
   experimental: {
     optimizePackageImports: ['lucide-react', '@radix-ui/react-icons', 'swiper', 'recharts'],
+    serverComponentsExternalPackages: ['bcryptjs', 'nodemailer'],
   },
   
   serverExternalPackages: ['nodemailer', 'bcryptjs', 'formidable'],
@@ -55,6 +56,13 @@ const nextConfig = {
           },
         },
       }
+      
+      // Reduce bundle size by excluding tests and docs
+      config.module.rules.push({
+        test: /\.(js|mjs|jsx|ts|tsx)$/,
+        include: /node_modules/,
+        exclude: /(@radix-ui|lucide-react).*\/(test|docs|__tests__|__mocks__)/,
+      })
     }
     
     config.resolve.fallback = {
@@ -65,7 +73,24 @@ const nextConfig = {
     return config
   },
   
-  // Headers for caching and performance
+  // Compress responses
+  compress: true,
+  
+  // Enable React Server Components
+  reactStrictMode: true,
+  
+  // Production optimizations
+  productionBrowserSourceMaps: false,
+  optimizeFonts: true,
+  swcMinify: true,
+  
+  // Performance optimizations
+  poweredByHeader: false,
+  devIndicators: {
+    buildActivity: false,
+  },
+  
+  // Caching optimizations
   async headers() {
     return [
       {
@@ -87,6 +112,10 @@ const nextConfig = {
             key: 'Referrer-Policy',
             value: 'origin-when-cross-origin',
           },
+          {
+            key: 'Strict-Transport-Security',
+            value: 'max-age=63072000; includeSubDomains; preload',
+          },
         ],
       },
       {
@@ -104,6 +133,15 @@ const nextConfig = {
           {
             key: 'Cache-Control',
             value: 'public, max-age=31536000, immutable',
+          },
+        ],
+      },
+      {
+        source: '/_next/data/(.*)',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, must-revalidate',
           },
         ],
       },
