@@ -294,42 +294,82 @@ export default function AccountPage() {
                 <p className="text-gray-600 dark:text-gray-400">{profile.email}</p>
               </div>
             </div>
-            {activeTab === "profile" && (
-              <div className="hidden lg:flex gap-3">
-                {isEditing ? (
-                  <>
-                    <Button variant="outline" onClick={handleCancel} className="bg-transparent rounded-xl">
-                      Cancel
-                    </Button>
-                    <Button
-                      onClick={handleSave}
-                      disabled={isSaving}
-                      className="bg-gradient-to-r from-pink-500 to-blue-600 hover:from-pink-600 hover:to-blue-700 text-white rounded-xl shadow-lg"
-                    >
-                      {isSaving ? (
-                        <>
-                          <Save className="h-4 w-4 mr-2 animate-spin" />
-                          Saving...
-                        </>
-                      ) : (
-                        <>
-                          <CheckCircle2 className="h-4 w-4 mr-2" />
-                          Save Changes
-                        </>
-                      )}
-                    </Button>
-                  </>
-                ) : (
+            <div className="hidden lg:flex gap-3">
+              {isEditing ? (
+                <>
+                  <Button variant="outline" onClick={handleCancel} className="bg-transparent rounded-xl">
+                    Cancel
+                  </Button>
                   <Button
-                    onClick={() => setIsEditing(true)}
+                    onClick={handleSave}
+                    disabled={isSaving}
                     className="bg-gradient-to-r from-pink-500 to-blue-600 hover:from-pink-600 hover:to-blue-700 text-white rounded-xl shadow-lg"
                   >
-                    <Edit className="h-4 w-4 mr-2" />
-                    Edit Profile
+                    {isSaving ? (
+                      <>
+                        <Save className="h-4 w-4 mr-2 animate-spin" />
+                        Saving...
+                      </>
+                    ) : (
+                      <>
+                        <CheckCircle2 className="h-4 w-4 mr-2" />
+                        Save Changes
+                      </>
+                    )}
                   </Button>
-                )}
-              </div>
-            )}
+                </>
+              ) : (
+                <Button
+                  onClick={() => setIsEditing(true)}
+                  className="bg-gradient-to-r from-pink-500 to-blue-600 hover:from-pink-600 hover:to-blue-700 text-white rounded-xl shadow-lg"
+                >
+                  <Edit className="h-4 w-4 mr-2" />
+                  Edit Profile
+                </Button>
+              )}
+            </div>
+            {/* Mobile profile buttons - always visible */}
+            <div className="lg:hidden flex gap-2">
+              {isEditing ? (
+                <>
+                  <Button 
+                    variant="outline" 
+                    onClick={handleCancel} 
+                    className="bg-transparent rounded-xl h-10 px-3"
+                    size="sm"
+                  >
+                    Cancel
+                  </Button>
+                  <Button
+                    onClick={handleSave}
+                    disabled={isSaving}
+                    className="bg-gradient-to-r from-pink-500 to-blue-600 hover:from-pink-600 hover:to-blue-700 text-white rounded-xl shadow-lg h-10 px-3"
+                    size="sm"
+                  >
+                    {isSaving ? (
+                      <>
+                        <Save className="h-3 w-3 mr-1 animate-spin" />
+                        Save
+                      </>
+                    ) : (
+                      <>
+                        <CheckCircle2 className="h-3 w-3 mr-1" />
+                        Save
+                      </>
+                    )}
+                  </Button>
+                </>
+              ) : (
+                <Button
+                  onClick={() => setIsEditing(true)}
+                  className="bg-gradient-to-r from-pink-500 to-blue-600 hover:from-pink-600 hover:to-blue-700 text-white rounded-xl shadow-lg h-10 px-3"
+                  size="sm"
+                >
+                  <Edit className="h-3 w-3 mr-1" />
+                  Edit
+                </Button>
+              )}
+            </div>
           </div>
 
           <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
@@ -599,29 +639,31 @@ export default function AccountPage() {
                 </Card>
               </div>
 
-              {/* Mobile Save Buttons */}
+              {/* Mobile Save Buttons - Fixed positioning */}
               {isEditing && (
-                <div className="lg:hidden flex gap-3">
-                  <Button variant="outline" onClick={handleCancel} className="flex-1 bg-transparent rounded-xl h-12">
-                    Cancel
-                  </Button>
-                  <Button
-                    onClick={handleSave}
-                    disabled={isSaving}
-                    className="flex-1 bg-gradient-to-r from-pink-500 to-blue-600 hover:from-pink-600 hover:to-blue-700 text-white rounded-xl shadow-lg h-12"
-                  >
-                    {isSaving ? (
-                      <>
-                        <Save className="h-4 w-4 mr-2 animate-spin" />
-                        Saving...
-                      </>
-                    ) : (
-                      <>
-                        <CheckCircle2 className="h-4 w-4 mr-2" />
-                        Save
-                      </>
-                    )}
-                  </Button>
+                <div className="lg:hidden fixed bottom-24 left-0 right-0 mx-4 z-10">
+                  <div className="flex gap-3 bg-white/80 dark:bg-gray-900/80 backdrop-blur-xl border border-gray-200/50 dark:border-gray-700/50 rounded-2xl p-3 shadow-lg">
+                    <Button variant="outline" onClick={handleCancel} className="flex-1 bg-transparent rounded-xl h-12">
+                      Cancel
+                    </Button>
+                    <Button
+                      onClick={handleSave}
+                      disabled={isSaving}
+                      className="flex-1 bg-gradient-to-r from-pink-500 to-blue-600 hover:from-pink-600 hover:to-blue-700 text-white rounded-xl shadow-lg h-12"
+                    >
+                      {isSaving ? (
+                        <>
+                          <Save className="h-4 w-4 mr-2 animate-spin" />
+                          Saving...
+                        </>
+                      ) : (
+                        <>
+                          <CheckCircle2 className="h-4 w-4 mr-2" />
+                          Save
+                        </>
+                      )}
+                    </Button>
+                  </div>
                 </div>
               )}
             </TabsContent>
