@@ -4,6 +4,10 @@ import { Inter } from "next/font/google"
 import "./globals.css"
 import { ThemeProvider } from "@/components/theme-provider"
 import { AuthProvider } from "@/hooks/useAuth"
+import Header from "@/components/Header"
+import Footer from "@/components/Footer"
+import GoToTop from "@/components/GoToTop"
+import MobileBottomNav from "@/components/MobileBottomNav"
 
 const inter = Inter({ 
   subsets: ["latin"],
@@ -54,7 +58,11 @@ export default function RootLayout({
           disableTransitionOnChange={false}
         >
           <AuthProvider>
+            <Header />
             {children}
+            <Footer />
+            <GoToTop />
+            <MobileBottomNav />
           </AuthProvider>
         </ThemeProvider>
       </body>
