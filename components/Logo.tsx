@@ -1,5 +1,5 @@
 import Link from "next/link"
-import { Sparkles } from "lucide-react"
+import Image from "next/image"
 
 interface LogoProps {
   className?: string
@@ -12,9 +12,15 @@ export default function Logo({ className = "w-10 h-10", href = "/", showText = t
   const logoContent = (
     <div className="flex items-center space-x-2">
       <div
-        className={`${className} bg-gradient-to-br from-pink-500 to-blue-600 rounded-lg flex items-center justify-center`}
+        className={`${className} rounded-lg flex items-center justify-center overflow-hidden`}
       >
-        <Sparkles className="w-6 h-6 text-white" />
+        <Image 
+          src="/logo.png" 
+          alt="Boost Web Agency Logo" 
+          width={40}
+          height={40}
+          className="w-full h-full object-contain"
+        />
       </div>
       {showText && (
         <div className="flex flex-col leading-tight">

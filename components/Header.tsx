@@ -20,15 +20,16 @@ import ThemeToggle from "./ThemeToggle"
 import Logo from "./Logo"
 import { useAuth } from "@/hooks/useAuth"
 
-const navigation = [
+// Define navigation items as a constant to ensure consistency between server and client
+const NAVIGATION_ITEMS = [
   { name: "Home", href: "/" },
   { name: "Shop", href: "/shop" },
   { name: "About", href: "/about" },
   { name: "Services", href: "/services" },
   { name: "Team", href: "/team" },
   { name: "FAQ", href: "/faq" },
-  { name: "Contact", href: "/contact" },
-]
+  { name: "Get Help", href: "/chat" },
+] as const
 
 const NavigationLink = memo(({ item, pathname }: { item: { name: string; href: string }; pathname: string }) => (
   <Link
@@ -70,7 +71,7 @@ export default function Header() {
 
             {/* Navigation Menu - Centered */}
             <div className="flex items-center space-x-4">
-              {navigation.map((item) => (
+              {NAVIGATION_ITEMS.map((item) => (
                 <NavigationLink key={item.name} item={item} pathname={pathname} />
               ))}
             </div>
@@ -186,7 +187,7 @@ export default function Header() {
             <div className="py-4 space-y-4">
               {/* Mobile Navigation Links */}
               <nav className="space-y-1">
-                {navigation.map((item) => (
+                {NAVIGATION_ITEMS.map((item) => (
                   <Link
                     key={item.name}
                     href={item.href}

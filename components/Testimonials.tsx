@@ -149,15 +149,15 @@ export default function Testimonials() {
         >
           {testimonials.map((testimonial) => (
             <SwiperSlide key={testimonial.id}>
-              <div className="mx-0 md:mx-4 lg:mx-8">
-                <div className="group bg-white dark:bg-gray-900 rounded-3xl shadow-xl hover:shadow-2xl dark:shadow-2xl dark:hover:shadow-pink-500/10 p-6 md:p-12 lg:p-16 relative transition-all duration-500 overflow-hidden border border-gray-100 dark:border-gray-800 hover:border-pink-200 dark:hover:border-pink-900">
+              <div className="h-full"> {/* Added h-full to ensure proper height */}
+                <div className="group bg-white dark:bg-gray-900 rounded-3xl shadow-xl hover:shadow-2xl dark:shadow-2xl dark:hover:shadow-pink-500/10 p-6 md:p-12 lg:p-16 relative transition-all duration-500 overflow-hidden border border-gray-100 dark:border-gray-800 hover:border-pink-200 dark:hover:border-pink-900 h-full flex flex-col">
                   <div className="absolute inset-0 bg-gradient-to-br from-pink-50/0 via-transparent to-blue-50/0 dark:from-pink-950/0 dark:to-blue-950/0 group-hover:from-pink-50/50 group-hover:to-blue-50/50 dark:group-hover:from-pink-950/20 dark:group-hover:to-blue-950/20 transition-all duration-500 pointer-events-none"></div>
 
                   <div className="absolute top-6 right-6 md:top-10 md:right-10 opacity-10 dark:opacity-5 group-hover:opacity-20 dark:group-hover:opacity-10 transition-opacity duration-500">
                     <Quote className="w-16 h-16 md:w-24 md:h-24 text-pink-500" strokeWidth={1.5} />
                   </div>
 
-                  <div className="relative z-10 flex flex-col items-center gap-6 md:gap-8 text-center">
+                  <div className="relative z-10 flex flex-col items-center gap-6 md:gap-8 text-center h-full">
                     <div className="flex-shrink-0">
                       <div className="relative">
                         <div className="relative w-20 h-20 md:w-28 md:h-28 lg:w-32 lg:h-32 rounded-full p-1 bg-gradient-to-br from-pink-500 via-pink-400 to-blue-500 shadow-lg group-hover:shadow-xl group-hover:scale-105 transition-all duration-500">
@@ -186,20 +186,22 @@ export default function Testimonials() {
                       </div>
                     </div>
 
-                    <div className="flex-1 w-full max-w-3xl">
-                      <div className="flex justify-center gap-1 mb-6">
-                        {[...Array(testimonial.rating)].map((_, i) => (
-                          <Star
-                            key={i}
-                            className="w-5 h-5 md:w-6 md:h-6 text-yellow-400 fill-yellow-400 group-hover:scale-110 transition-transform duration-300"
-                            style={{ transitionDelay: `${i * 50}ms` }}
-                          />
-                        ))}
-                      </div>
+                    <div className="flex-1 w-full max-w-3xl flex flex-col justify-between">
+                      <div>
+                        <div className="flex justify-center gap-1 mb-6">
+                          {[...Array(testimonial.rating)].map((_, i) => (
+                            <Star
+                              key={i}
+                              className="w-5 h-5 md:w-6 md:h-6 text-yellow-400 fill-yellow-400 group-hover:scale-110 transition-transform duration-300"
+                              style={{ transitionDelay: `${i * 50}ms` }}
+                            />
+                          ))}
+                        </div>
 
-                      <p className="text-gray-700 dark:text-gray-300 text-base md:text-lg lg:text-xl leading-relaxed md:leading-relaxed mb-8 text-pretty font-light italic">
-                        "{testimonial.content}"
-                      </p>
+                        <p className="text-gray-700 dark:text-gray-300 text-base md:text-lg lg:text-xl leading-relaxed md:leading-relaxed mb-8 text-pretty font-light italic">
+                          "{testimonial.content}"
+                        </p>
+                      </div>
 
                       <div className="space-y-2">
                         <h4 className="text-xl md:text-2xl font-bold text-gray-900 dark:text-white text-balance">
@@ -271,7 +273,7 @@ export default function Testimonials() {
           }
           
           .testimonials-swiper .swiper-pagination {
-            display: none;
+            display: block; /* Ensure pagination is visible on mobile */
           }
         }
         
@@ -315,6 +317,20 @@ export default function Testimonials() {
         
         .testimonials-swiper .swiper-slide > div {
           width: 100%;
+        }
+        
+        /* Ensure proper mobile containment */
+        @media (max-width: 768px) {
+          .testimonials-swiper {
+            overflow: hidden;
+            padding-left: 0;
+            padding-right: 0;
+          }
+          
+          .testimonials-swiper .swiper-slide {
+            padding-left: 0;
+            padding-right: 0;
+          }
         }
       `}</style>
     </SectionWrapper>

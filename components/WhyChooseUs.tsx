@@ -65,7 +65,7 @@ export default function WhyChooseUs() {
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           {/* Image */}
           <div className="relative">
-            <div className="relative z-10 bg-white dark:bg-muted p-8 rounded-2xl shadow-xl transform transition-all duration-700 hover:scale-105">
+            <div className="relative z-10 bg-white dark:bg-muted p-4 md:p-8 rounded-2xl shadow-xl transform transition-all duration-700 hover:scale-105">
               <Image
                 src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=500&h=400&fit=crop&crop=center"
                 alt="Why Choose Us - Team collaboration"
@@ -75,11 +75,11 @@ export default function WhyChooseUs() {
                 priority
               />
             </div>
-            {/* Background Elements */}
-            <div className="absolute -top-6 -right-6 w-32 h-32 bg-gradient-to-br from-pink-500 to-blue-600 rounded-2xl -z-10 opacity-20 animate-pulse"></div>
-            <div className="absolute -bottom-6 -left-6 w-24 h-24 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full -z-10 opacity-20 animate-bounce"></div>
-            <div className="absolute top-10 -left-4 w-16 h-16 bg-yellow-400 rounded-full opacity-30 animate-ping"></div>
-            <div className="absolute bottom-20 -right-8 w-12 h-12 bg-green-400 rounded-full opacity-40 animate-pulse"></div>
+            {/* Background Elements - Adjusted for mobile */}
+            <div className="absolute -top-4 -right-4 w-16 h-16 md:w-32 md:h-32 bg-gradient-to-br from-pink-500 to-blue-600 rounded-2xl -z-10 opacity-20 animate-pulse"></div>
+            <div className="absolute -bottom-4 -left-4 w-16 h-16 md:w-24 md:h-24 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full -z-10 opacity-20 animate-bounce"></div>
+            <div className="absolute top-6 -left-2 w-8 h-8 md:w-16 md:h-16 bg-yellow-400 rounded-full opacity-30 animate-ping"></div>
+            <div className="absolute bottom-12 -right-4 w-8 h-8 md:w-12 md:h-12 bg-green-400 rounded-full opacity-40 animate-pulse"></div>
           </div>
 
           {/* Content */}
@@ -87,11 +87,11 @@ export default function WhyChooseUs() {
             <div
               className={`transform transition-all duration-700 ${isVisible ? "translate-y-0 opacity-100" : "translate-y-10 opacity-0"}`}
             >
-              <h2 className="text-4xl lg:text-5xl font-bold text-gray-900 dark:text-white mb-6">
+              <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 dark:text-white mb-6">
                 Why Our Agency
               </h2>
               <div className="w-20 h-1 bg-gradient-to-r from-pink-500 to-blue-600 mb-6 transform transition-all duration-500 hover:w-32"></div>
-              <p className="text-gray-600 dark:text-gray-300 text-lg leading-relaxed">
+              <p className="text-gray-600 dark:text-gray-300 text-base md:text-lg leading-relaxed">
                 Boost Web Agency stands out for our blend of expertise and innovation. We offer customized digital
                 solutions tailored to your needs, using the latest technologies to drive growth and enhance your online
                 presence. Our dedicated team ensures exceptional results and ongoing support, making us a trusted
@@ -99,12 +99,12 @@ export default function WhyChooseUs() {
               </p>
             </div>
 
-            {/* Animated Stats */}
-            <div className="grid grid-cols-3 gap-8">
+            {/* Animated Stats - Made responsive */}
+            <div className="grid grid-cols-3 gap-4 md:gap-8">
               {stats.map((stat, index) => (
                 <div
                   key={index}
-                  className={`text-center transform transition-all duration-700 hover:scale-110 ${
+                  className={`text-center transform transition-all duration-700 hover:scale-105 ${
                     isVisible ? "translate-y-0 opacity-100" : "translate-y-10 opacity-0"
                   }`}
                   style={{ transitionDelay: `${index * 200}ms` }}
@@ -112,14 +112,14 @@ export default function WhyChooseUs() {
                   <div className="relative">
                     <div className="absolute inset-0 bg-gradient-to-r from-pink-500 to-blue-600 rounded-full opacity-10 animate-pulse"></div>
 
-                    <div className="relative text-3xl lg:text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-pink-500 to-blue-600 mb-2 py-4">
+                    <div className="relative text-2xl md:text-3xl lg:text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-pink-500 to-blue-600 mb-2 py-2 md:py-4">
                       <Counter end={stat.number} isVisible={isVisible} duration={2000 + index * 500} />
                       {stat.suffix}
                     </div>
                   </div>
-                  <p className="text-gray-600 dark:text-gray-200 font-medium">{stat.label}</p>
+                  <p className="text-gray-600 dark:text-gray-200 font-medium text-xs md:text-sm">{stat.label}</p>
 
-                  <div className="mt-2 h-1 bg-gray-200 dark:bg-muted-foreground/30 rounded-full overflow-hidden">
+                  <div className="mt-1 md:mt-2 h-1 bg-gray-200 dark:bg-muted-foreground/30 rounded-full overflow-hidden">
                     <div
                       className="h-full bg-gradient-to-r from-pink-500 to-blue-600 rounded-full transform transition-all duration-1000 ease-out"
                       style={{
