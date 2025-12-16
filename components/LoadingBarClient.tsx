@@ -1,30 +1,29 @@
 "use client";
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { usePathname } from 'next/navigation';
 import LoadingSpinner from '@/components/LoadingSpinner';
 
 export default function LoadingBarClient() {
-  const [loading, setLoading] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
   const pathname = usePathname();
-  const [prevPathname, setPrevPathname] = useState(pathname);
+  const timerRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
-    // Start loading when pathname changes
-    if (pathname !== prevPathname) {
-      setLoading(true);
-      
-      // Complete loading after 300ms
-      const timer = setTimeout(() => {
-        setLoading(false);
-        setPrevPathname(pathname);
-      }, 300);
-      
-      return () => clearTimeout(timer);
-    }
-  }, [pathname, prevPathname]);
+    // Only show loading spinner if navigation takes more than 500ms
+    timerRef.current = setTimeout(() => {
+      setIsVisible(true);
+    }, 500);
 
-  if (!loading) return null;
+    return () => {
+      if (timerRef.current) {
+        clearTimeout(timerRef.current);
+      }
+      setIsVisible(false);
+    };
+  }, [pathname]);
+
+  if (!isVisible) return null;
 
   return <LoadingSpinner />;
 }

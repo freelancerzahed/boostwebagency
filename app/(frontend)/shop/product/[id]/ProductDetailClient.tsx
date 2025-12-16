@@ -130,14 +130,20 @@ export default function ProductDetails() {
   const params = useParams()
   const router = useRouter()
   const productId = params.id as string
-  const { addItem: addToCart } = useCart()
+  const { addToCart } = useCart()
   const { addItem: addToWishlist, removeItem: removeFromWishlist, isInWishlist } = useWishlist()
   const { toast } = useToast()
 
   const currentUrl = typeof window !== "undefined" ? window.location.href : ""
 
   const handleAddToCart = () => {
-    addToCart(product, quantity)
+    addToCart({
+      id: product.id,
+      name: product.name,
+      price: product.price,
+      image: product.image,
+      quantity: quantity,
+    })
     toast({
       title: "Added to Cart!",
       description: `${product.name} x ${quantity} has been added to your cart.`,

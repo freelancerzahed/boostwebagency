@@ -2,6 +2,7 @@
 
 import { usePathname } from "next/navigation"
 import Link from "next/link"
+import { memo } from "react"
 import { Home, ShoppingBag, Briefcase, Info, MessageCircle } from "lucide-react"
 
 const navigation = [
@@ -12,7 +13,7 @@ const navigation = [
   { name: "Chat", href: "/chat", icon: MessageCircle },
 ]
 
-export default function MobileBottomNav() {
+const MobileBottomNav = memo(function MobileBottomNav() {
   const pathname = usePathname()
 
   return (
@@ -43,4 +44,6 @@ export default function MobileBottomNav() {
       </div>
     </nav>
   )
-}
+})
+
+export default MobileBottomNav

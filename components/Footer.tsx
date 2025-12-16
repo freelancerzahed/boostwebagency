@@ -55,7 +55,7 @@ const LinkSection = memo(({ title, links }: { title: string; links: { name: stri
 
 LinkSection.displayName = "LinkSection"
 
-export default function Footer() {
+const Footer = memo(function Footer() {
   return (
     <footer className="bg-gray-50 dark:bg-gray-900 border-t border-gray-200 dark:border-gray-800">
       <div className="container mx-auto px-4 py-12">
@@ -127,4 +127,6 @@ export default function Footer() {
       </div>
     </footer>
   )
-}
+})
+
+export default Footer

@@ -3,7 +3,6 @@ const nextConfig = {
   // Performance optimizations
   experimental: {
     optimizePackageImports: ['lucide-react', '@radix-ui/react-icons', 'swiper', 'recharts'],
-    serverComponentsExternalPackages: ['bcryptjs', 'nodemailer'],
   },
   
   serverExternalPackages: ['nodemailer', 'bcryptjs', 'formidable'],
@@ -81,14 +80,9 @@ const nextConfig = {
   
   // Production optimizations
   productionBrowserSourceMaps: false,
-  optimizeFonts: true,
-  swcMinify: true,
   
   // Performance optimizations
   poweredByHeader: false,
-  devIndicators: {
-    buildActivity: false,
-  },
   
   // Caching optimizations
   async headers() {

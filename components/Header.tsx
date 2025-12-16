@@ -47,7 +47,7 @@ const NavigationLink = memo(({ item, pathname }: { item: { name: string; href: s
 
 NavigationLink.displayName = "NavigationLink"
 
-export default function Header() {
+function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const pathname = usePathname()
   const { user, logout, isLoading } = useAuth()
@@ -245,3 +245,5 @@ export default function Header() {
     </header>
   )
 }
+
+export default memo(Header)
