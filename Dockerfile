@@ -1,60 +1,46 @@
 # Multi-stage build for optimized production image
-FROM node:18-alpine AS deps
+FROM node:18-alpine AS base
+
+# Install pnpm
+RUN npm install -g pnpm@latest
+
+# Builder stage
+FROM base AS builder
 WORKDIR /app
 
 # Copy package files
-COPY package.json pnpm-lock.yaml ./
-
-# Install pnpm
-RUN npm install -g pnpm
+COPY package.json pnpm-lock.yaml* ./
 
 # Install dependencies
-RUN pnpm install --frozen-lockfile
-
-# Build stage
-FROM node:18-alpine AS builder
-WORKDIR /app
-
-# Copy package files
-COPY package.json pnpm-lock.yaml ./
-
-# Install pnpm
-RUN npm install -g pnpm
-
-# Install dependencies
-RUN pnpm install --frozen-lockfile
+RUN pnpm config set store-dir .pnpm-store && \
+    pnpm install --frozen-lockfile || npm install --legacy-peer-deps
 
 # Copy source code
 COPY . .
 
-# Build the application
-RUN pnpm run build
+# Build Next.js application
+RUN pnpm run build || npm run build
 
 # Production stage
-FROM node:18-alpine AS runner
+FROM base AS runner
 WORKDIR /app
 
 ENV NODE_ENV=production
+ENV PORT=3000
 
 # Create non-root user for security
-RUN addgroup --system --gid 1001 nodejs
-RUN adduser --system --uid 1001 nextjs
+RUN addgroup --system --gid 1001 nodejs && \
+    adduser --system --uid 1001 nextjs
 
-# Copy built application from builder
-COPY --from=builder /app/public ./public
-
-# Set the correct permission for precompiled files
+# Copy built files from builder
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
+COPY --from=builder --chown=nextjs:nodejs /app/public ./public
 
-# Copy package.json for runtime dependencies
-COPY --chown=nextjs:nodejs package.json ./
-
+# Switch to non-root user
 USER nextjs
 
 EXPOSE 3000
-
-ENV PORT=3000
 
 # Health check
 HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
