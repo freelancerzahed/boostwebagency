@@ -9,7 +9,7 @@ export default function OrdersLoading() {
       {/* Mobile Header */}
       <div className="sticky top-0 z-50 bg-gradient-to-r from-pink-500 to-blue-600 text-white lg:hidden">
         <div className="flex items-center justify-between p-4 pb-6">
-          <Link href="/" className="p-2 -ml-2 rounded-full hover:bg-white/10 transition-colors">
+          <Link href="/account/profile" className="p-2 -ml-2 rounded-full hover:bg-white/10 transition-colors">
             <ArrowLeft className="w-6 h-6" />
           </Link>
           <h1 className="text-lg font-semibold">My Orders</h1>
@@ -22,7 +22,7 @@ export default function OrdersLoading() {
         <div className="max-w-7xl mx-auto px-6 py-4">
           <div className="flex items-center space-x-4">
             <Link
-              href="/"
+              href="/account/profile"
               className="p-2 -ml-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
             >
               <ArrowLeft className="w-5 h-5" />

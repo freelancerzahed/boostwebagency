@@ -478,13 +478,12 @@ export default function AccountPage() {
                         My Wishlist
                       </Button>
                     </Link>
-                    {/* <Link href="/shop">
+                    <Link href="/shop">
                       <Button variant="outline" className="w-full justify-start bg-transparent rounded-xl" size="lg">
                         <ShoppingBag className="h-5 w-5 mr-3" />
-                        Continue Shopping
+                        Browse Products
                       </Button>
-                    </Link> */}
-                    {/* Hidden - Shop pages disabled for now */}
+                    </Link>
                     <Link href="/account/support">
                       <Button variant="outline" className="w-full justify-start bg-transparent rounded-xl" size="lg">
                         <Mail className="h-5 w-5 mr-3" />

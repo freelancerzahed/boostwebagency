@@ -58,7 +58,7 @@ export default function RegisterPage() {
     })
 
     if (result.success) {
-      router.push("/") // Redirect to home - account/profile hidden for now
+      router.push("/account/profile")
     } else {
       setError(result.message || "Registration failed")
     }
