@@ -14,8 +14,8 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import CartIcon from "./CartIcon"
-import WishlistIcon from "./WishlistIcon"
+// import CartIcon from "./CartIcon" // Hidden
+// import WishlistIcon from "./WishlistIcon" // Hidden
 import ThemeToggle from "./ThemeToggle"
 import Logo from "./Logo"
 import { useAuth } from "@/hooks/useAuth"
@@ -79,8 +79,9 @@ function Header() {
             {/* Right Actions */}
             <div className="flex items-center space-x-2">
               <ThemeToggle />
-              <WishlistIcon />
-              <CartIcon />
+              {/* <WishlistIcon /> */}
+              {/* <CartIcon /> */}
+              {/* Hidden - Cart and Wishlist pages disabled for now */}
 
               {/* User Account Dropdown */}
               {user ? (
@@ -107,7 +108,8 @@ function Header() {
                       </div>
                     </DropdownMenuLabel>
                     <DropdownMenuSeparator className="bg-gray-200 dark:bg-gray-700" />
-                    <DropdownMenuItem asChild>
+                    {/* Account, Orders, and Wishlist hidden - to be enabled later */}
+                    {/* <DropdownMenuItem asChild>
                       <Link
                         href="/account"
                         className="flex items-center cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700"
@@ -133,7 +135,7 @@ function Header() {
                         <Heart className="mr-2 h-4 w-4" />
                         Wishlist
                       </Link>
-                    </DropdownMenuItem>
+                    </DropdownMenuItem> */}
                     <DropdownMenuSeparator className="bg-gray-200 dark:bg-gray-700" />
                     <DropdownMenuItem
                       onClick={handleLogout}
@@ -167,8 +169,9 @@ function Header() {
           {/* Mobile Actions */}
           <div className="flex items-center space-x-2">
             <ThemeToggle />
-            <WishlistIcon />
-            <CartIcon />
+            {/* <WishlistIcon /> */}
+            {/* <CartIcon /> */}
+            {/* Hidden - Cart and Wishlist pages disabled for now */}
 
             <Button
               variant="ghost"
