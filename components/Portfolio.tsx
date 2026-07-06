@@ -24,6 +24,14 @@ const categories = [
 const projects = [
   {
     id: 1,
+    title: "Shadhin Bazar - E-commerce Marketplace",
+    category: ["web-development", "ecommerce"],
+    description: "Full-featured online marketplace for diverse products with complete vendor management system and advanced inventory control",
+    image: "/portfolio/shadhin-bazar-marketplace.jpg",
+    link: "http://shadhinbazar.com/",
+  },
+  {
+    id: 2,
     title: "E-commerce Website - Selia",
     category: ["web-development", "ecommerce"],
     description: "Modern e-commerce platform with seamless shopping experience and secure payment integration",
@@ -31,7 +39,7 @@ const projects = [
     link: "https://selia.ma/",
   },
   {
-    id: 2,
+    id: 3,
     title: "Digital Marketing Campaign",
     category: ["digital-marketing"],
     description: "Comprehensive digital marketing strategy driving 300% increase in engagement",
@@ -39,7 +47,7 @@ const projects = [
     link: "#",
   },
   {
-    id: 3,
+    id: 4,
     title: "Corporate Website",
     category: ["web-development"],
     description: "Professional corporate website with modern design and optimized performance",
@@ -47,7 +55,7 @@ const projects = [
     link: "https://timesdigitalbd.com/",
   },
   {
-    id: 4,
+    id: 5,
     title: "Brand Identity Design",
     category: ["logo-design"],
     description: "Complete brand identity package including logo, color palette, and brand guidelines",
@@ -55,7 +63,7 @@ const projects = [
     link: "#",
   },
   {
-    id: 5,
+    id: 6,
     title: "E-commerce Platform",
     category: ["web-development", "ecommerce"],
     description: "Full-featured online marketplace with vendor management and advanced analytics",
@@ -63,7 +71,7 @@ const projects = [
     link: "#",
   },
   {
-    id: 6,
+    id: 7,
     title: "Social Media Campaign",
     category: ["digital-marketing"],
     description: "Multi-platform social media strategy with viral content and influencer partnerships",
@@ -71,7 +79,7 @@ const projects = [
     link: "#",
   },
   {
-    id: 7,
+    id: 8,
     title: "Mobile App Development",
     category: ["web-development", "mobile-apps"],
     description: "Cross-platform mobile application with intuitive UI and real-time features",
@@ -79,7 +87,7 @@ const projects = [
     link: "#",
   },
   {
-    id: 8,
+    id: 9,
     title: "SEO Optimization",
     category: ["digital-marketing"],
     description: "Complete SEO overhaul resulting in first-page rankings for key search terms",
@@ -87,7 +95,7 @@ const projects = [
     link: "#",
   },
   {
-    id: 9,
+    id: 10,
     title: "Custom Software Solution",
     category: ["web-development"],
     description: "Tailored enterprise software solution streamlining business operations",
@@ -95,7 +103,7 @@ const projects = [
     link: "#",
   },
   {
-    id: 10,
+    id: 11,
     title: "User Interface Redesign",
     category: ["ui-ux-design"],
     description: "Complete UI/UX redesign improving user satisfaction by 85%",
