@@ -27,7 +27,7 @@ const projects = [
     title: "Shadhin Bazar - E-commerce Marketplace",
     category: ["web-development", "ecommerce"],
     description: "Full-featured online marketplace for diverse products with complete vendor management system and advanced inventory control",
-    image: "/portfolio/shadhin-bazar-marketplace.jpg",
+    image: "/portfolio/Sadin-Bazar-online-shop.png",
     link: "http://shadhinbazar.com/",
   },
   {
