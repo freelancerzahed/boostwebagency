@@ -1,10 +1,15 @@
 import nodemailer from "nodemailer"
 import { NextRequest, NextResponse } from "next/server"
+import emailConfig from "../../../config/email.config.mjs"
 
 // Configure email transporter
 const getTransporter = () => {
-  // Check if we're in test mode
-  if (process.env.EMAIL_TEST_MODE === "true" || !process.env.EMAIL_USER) {
+  // Support both environment variables and a local config file
+  const EMAIL_TEST_MODE = (emailConfig.EMAIL_TEST_MODE === "true" || emailConfig.EMAIL_TEST_MODE === true)
+  const EMAIL_USER = emailConfig.EMAIL_USER
+
+  // Check if we're in test mode or missing credentials
+  if (EMAIL_TEST_MODE || !EMAIL_USER) {
     console.log("📧 Email Test Mode: Emails will be logged but not sent")
     return null
   }
@@ -12,8 +17,8 @@ const getTransporter = () => {
   return nodemailer.createTransport({
     service: "gmail",
     auth: {
-      user: process.env.EMAIL_USER,
-      pass: process.env.EMAIL_PASSWORD,
+      user: EMAIL_USER,
+      pass: emailConfig.EMAIL_PASSWORD,
     },
   })
 }
@@ -54,7 +59,7 @@ export async function POST(request: NextRequest) {
 
     // Email to client
     const clientMailOptions = {
-      from: process.env.EMAIL_USER || "boostwebagency.info@gmail.com",
+      from: emailConfig.EMAIL_USER || "boostwebagency.info@gmail.com",
       to: email,
       subject: "Your FREE Digital Marketing Proposal - Boost Web Agency",
       html: `
@@ -113,8 +118,8 @@ export async function POST(request: NextRequest) {
 
     // Email to company
     const companyMailOptions = {
-      from: process.env.EMAIL_USER || "boostwebagency.info@gmail.com",
-      to: process.env.COMPANY_EMAIL || "boostwebagency.info@gmail.com",
+      from: emailConfig.EMAIL_USER || "boostwebagency.info@gmail.com",
+      to: emailConfig.COMPANY_EMAIL || "boostwebagency.info@gmail.com",
       subject: `NEW Proposal Request: ${choose_service} - ${name}`,
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
