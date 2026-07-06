@@ -83,8 +83,8 @@ function Header() {
               {/* <CartIcon /> */}
               {/* Hidden - Cart and Wishlist pages disabled for now */}
 
-              {/* User Account Dropdown */}
-              {user ? (
+              {/* User Account Dropdown - Hidden for now */}
+              {/* {user ? (
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
                     <Button variant="ghost" size="sm" className="h-9 w-9 p-0">
@@ -157,7 +157,7 @@ function Header() {
                     <User className="w-4 h-4" />
                   </Link>
                 </Button>
-              )}
+              )} */}
             </div>
           </div>
         </div>
@@ -205,8 +205,8 @@ function Header() {
                 ))}
               </nav>
 
-              {/* Mobile User Section */}
-              <div className="pt-4 border-t border-gray-200 dark:border-gray-700 mx-2">
+              {/* Mobile User Section - Hidden for now */}
+              {/* <div className="pt-4 border-t border-gray-200 dark:border-gray-700 mx-2">
                 {user ? (
                   <div className="flex items-center justify-between px-4">
                     <div className="flex items-center space-x-3">
@@ -240,7 +240,7 @@ function Header() {
                     </Button>
                   </div>
                 )}
-              </div>
+              </div> */}
             </div>
           </div>
         )}
