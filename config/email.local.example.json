@@ -1,0 +1,6 @@
+{
+  "EMAIL_TEST_MODE": false,
+  "EMAIL_USER": "your-gmail@gmail.com",
+  "EMAIL_PASSWORD": "your-16-char-app-password",
+  "COMPANY_EMAIL": "boostwebagency.info@gmail.com"
+}
