@@ -23,7 +23,7 @@ import { useAuth } from "@/hooks/useAuth"
 // Define navigation items as a constant to ensure consistency between server and client
 const NAVIGATION_ITEMS = [
   { name: "Home", href: "/" },
-  { name: "Shop", href: "/shop" },
+  // { name: "Shop", href: "/shop" }, // Hidden - to be enabled later
   { name: "About", href: "/about" },
   { name: "Services", href: "/services" },
   { name: "Team", href: "/team" },

@@ -243,12 +243,13 @@ export default function WishlistPage() {
               <p className="text-gray-500 dark:text-gray-400 text-center mb-6">
                 Save items you love to your wishlist and come back to them later.
               </p>
-              <Link href="/shop">
+              {/* <Link href="/shop">
                 <Button className="bg-gradient-to-r from-pink-500 to-blue-600 hover:from-pink-600 hover:to-blue-700 text-white shadow-lg shadow-pink-500/30">
                   <Sparkles className="h-4 w-4 mr-2" />
                   Start Shopping
                 </Button>
-              </Link>
+              </Link> */}
+              {/* Hidden - Shop pages disabled for now */}
             </CardContent>
           </Card>
         ) : (
