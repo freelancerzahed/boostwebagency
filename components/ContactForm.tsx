@@ -30,6 +30,7 @@ export default function ContactForm() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsSubmitting(true)
+    setStatus("")
 
     const data = new FormData()
     Object.entries(formData).forEach(([key, value]) => {
@@ -45,7 +46,7 @@ export default function ContactForm() {
       })
 
       if (response.ok) {
-        setStatus("Thank you for your message! We'll get back to you soon.")
+        setStatus("✅ SUCCESS! Your FREE Digital Marketing Proposal request has been sent. Check your email for confirmation. Our team will contact you within 24 hours.")
         setFormData({
           name: "",
           email: "",
@@ -55,11 +56,16 @@ export default function ContactForm() {
           message: "",
           file: null,
         })
+        // Auto-hide status after 8 seconds
+        setTimeout(() => setStatus(""), 8000)
       } else {
-        setStatus("Failed to send message. Please try again.")
+        const errorData = await response.json()
+        setStatus(`❌ Error: ${errorData.error || "Failed to send proposal request. Please try again or contact us directly."}`
+        )
       }
-    } catch (error) {
-      setStatus("Failed to send message. Please try again.")
+    } catch (error: any) {
+      setStatus(`❌ Error: Unable to connect. Please try again or call us directly at +880 1603-108425`)
+      console.error("Form submission error:", error)
     } finally {
       setIsSubmitting(false)
     }
@@ -234,11 +240,13 @@ export default function ContactForm() {
               {/* Status */}
               {status && (
                 <div
-                  className={`p-4 rounded-2xl ${
-                    status.includes("Thank you") ? "bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-200" : "bg-red-100 dark:bg-red-900 text-red-700 dark:text-red-200"
+                  className={`p-4 rounded-2xl animate-in fade-in duration-300 ${
+                    status.includes("✅") 
+                      ? "bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-700/50 text-green-800 dark:text-green-200" 
+                      : "bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-700/50 text-red-800 dark:text-red-200"
                   }`}
                 >
-                  {status}
+                  <p className="text-sm font-medium leading-relaxed">{status}</p>
                 </div>
               )}
 

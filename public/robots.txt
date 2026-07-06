@@ -1,0 +1,20 @@
+User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /api/
+Disallow: /auth/
+Disallow: /*.json$
+Disallow: /*?*
+
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+Crawl-delay: 1
+
+Sitemap: https://boostwebagency.com/sitemap.xml
+Sitemap: https://boostwebagency.com/sitemap-portfolio.xml
+
+Host: https://boostwebagency.com

@@ -151,6 +151,29 @@ const nextConfig = {
   typescript: {
     ignoreBuildErrors: true,
   },
+
+  // SEO: Rewrites for sitemap
+  async rewrites() {
+    return {
+      beforeFiles: [
+        {
+          source: '/sitemap.xml',
+          destination: '/api/sitemap',
+        },
+      ],
+    }
+  },
+
+  // SEO: Redirects
+  async redirects() {
+    return [
+      {
+        source: '/portfolio',
+        destination: '/#portfolio',
+        permanent: false,
+      },
+    ]
+  },
 }
 
 export default nextConfig

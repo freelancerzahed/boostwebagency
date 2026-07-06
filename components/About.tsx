@@ -43,26 +43,29 @@ export default function About() {
               >
                 ABOUT US
               </p>
-              <h2
+              <h1
                 className="text-4xl lg:text-5xl font-bold text-gray-900 dark:text-white mb-6 animate-fade-in-up"
                 style={{ animationDelay: "300ms" }}
               >
-                Creative Team Dedicated to Building Exceptional Websites
-              </h2>
+                Founder & CEO: Zahedul Islam
+              </h1>
+              <p
+                className="text-gray-600 dark:text-gray-300 text-lg leading-relaxed mb-4 animate-fade-in-up"
+                style={{ animationDelay: "400ms" }}
+              >
+                I am Zahedul Islam, a passionate <span className="font-semibold text-gray-900 dark:text-white">Web Application Developer and Digital Marketer</span>. At Boost Web Agency, I lead a talented team dedicated to creating outstanding websites and digital solutions tailored to your needs.
+              </p>
               <p
                 className="text-gray-600 dark:text-gray-300 text-lg leading-relaxed animate-fade-in-up"
                 style={{ animationDelay: "400ms" }}
               >
-                At Boost Web Agency, our talented team is committed to creating outstanding websites tailored to your
-                needs. We combine creativity with technical expertise to deliver innovative solutions that enhance your
-                online presence. Our focus is on delivering high-quality results through strategic design and
-                development.
+                With expertise in both technical development and strategic digital marketing, I combine creativity with technical expertise to deliver innovative solutions that enhance your online presence. My focus is on delivering high-quality results through strategic design, development, and marketing strategies.
               </p>
             </div>
 
             {/* Features */}
             <div className="space-y-4">
-              {["Innovative Solutions", "Dedicated Team", "Commitment to Quality"].map((feature, index) => (
+              {["Web Development Expertise", "Digital Marketing Strategy", "Commitment to Excellence"].map((feature, index) => (
                 <div
                   key={index}
                   className="flex items-center space-x-3 transform transition-all duration-500 hover:translate-x-2 animate-fade-in-up"
