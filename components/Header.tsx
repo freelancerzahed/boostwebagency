@@ -9,7 +9,6 @@ import { Button } from "@/components/ui/button"
 // import WishlistIcon from "./WishlistIcon" // Hidden
 import ThemeToggle from "./ThemeToggle"
 import Logo from "./Logo"
-import { useAuth } from "@/hooks/useAuth"
 
 // Define navigation items as a constant to ensure consistency between server and client
 const NAVIGATION_ITEMS = [
@@ -41,15 +40,10 @@ NavigationLink.displayName = "NavigationLink"
 function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const pathname = usePathname()
-  const { user, logout, isLoading } = useAuth()
 
   useEffect(() => {
     setIsMenuOpen(false)
   }, [pathname])
-
-  const handleLogout = async () => {
-    await logout()
-  }
 
   return (
     <header className="fixed top-0 left-0 w-full z-40 bg-white/95 dark:bg-gray-900/95 backdrop-blur-sm border-b border-gray-200 dark:border-gray-800">
