@@ -84,7 +84,7 @@ export const metadata: Metadata = {
   },
   metadataBase: new URL("https://boostwebagency.com"),
   verification: {
-    google: "your-google-verification-code",
+    google: "eCHN0G8qsi-8uqizgqgovuBdkIiKQ1dS22c-9cUjJ2U",
   },
 }
 
