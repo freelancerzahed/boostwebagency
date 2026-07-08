@@ -32,7 +32,7 @@ const Testimonials = dynamic(() => import("@/components/Testimonials"), {
   ssr: true,
 })
 
-const ContactForm = dynamic(() => import("@/components/ContactForm"), {
+const ChatClientPage = dynamic(() => import("@/app/(frontend)/chat/ChatClientPage"), {
   loading: () => <div className="py-20 bg-gray-50" />,
   ssr: true,
 })
@@ -59,7 +59,7 @@ export default function HomePage() {
         <Testimonials />
       </Suspense>
       <Suspense fallback={<div className="py-20 bg-gray-50" />}>
-        <ContactForm />
+        <ChatClientPage />
       </Suspense>
     </main>
   )

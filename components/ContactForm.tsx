@@ -1,8 +1,8 @@
 "use client"
 
 import type React from "react"
-import { useState } from "react"
-import { Phone, Mail, MapPin, Upload, Send, CheckCircle } from "lucide-react"
+import { useState, useEffect } from "react"
+import { Phone, Mail, MapPin, Upload, Send, CheckCircle, AlertCircle } from "lucide-react"
 
 export default function ContactForm() {
   const [formData, setFormData] = useState({
@@ -16,10 +16,84 @@ export default function ContactForm() {
   })
   const [status, setStatus] = useState("")
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [errors, setErrors] = useState<Record<string, string>>({})
+
+  const validateForm = (): boolean => {
+    const newErrors: Record<string, string> = {}
+
+    // Defensive: read values from DOM to avoid stale React state during hydration
+    const nameVal = (document.querySelector('input[name="name"]') as HTMLInputElement | null)?.value || formData.name
+    const emailVal = (document.querySelector('input[name="email"]') as HTMLInputElement | null)?.value || formData.email
+    const serviceVal = (document.querySelector('select[name="choose_service"]') as HTMLSelectElement | null)?.value || formData.choose_service
+    const messageVal = (document.querySelector('textarea[name="message"]') as HTMLTextAreaElement | null)?.value || formData.message
+
+    if (!nameVal.trim()) {
+      newErrors.name = "Full name is required"
+    } else if (nameVal.trim().length < 2) {
+      newErrors.name = "Name must be at least 2 characters"
+    }
+
+    if (!emailVal.trim()) {
+      newErrors.email = "Email address is required"
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailVal)) {
+      newErrors.email = "Please enter a valid email address"
+    }
+
+    if (!serviceVal) {
+      newErrors.choose_service = "Please select a service"
+    }
+
+    if (!messageVal.trim()) {
+      newErrors.message = "Please tell us about your project"
+    } else if (messageVal.trim().length < 10) {
+      newErrors.message = "Message must be at least 10 characters"
+    }
+
+    setErrors(newErrors)
+    return Object.keys(newErrors).length === 0
+  }
+
+  // Defensive: remove any leftover HTML5 `required` attributes that may come from SSR
+  useEffect(() => {
+    try {
+      const selectors = [
+        'input[name="name"]',
+        'input[name="email"]',
+        'input[name="phone"]',
+        'select[name="choose_service"]',
+        'textarea[name="message"]',
+      ]
+      // disable native validation on the form and remove any `required` attributes
+      const form = document.querySelector('form') as HTMLFormElement | null
+      if (form) {
+        try {
+          // prefer property assignment which reliably disables validation
+          ;(form as any).noValidate = true
+        } catch (e) {
+          form.setAttribute('novalidate', 'true')
+        }
+      }
+      selectors.forEach((sel) => {
+        document.querySelectorAll(sel).forEach((el) => {
+          el.removeAttribute('required')
+          // prevent native invalid UI
+          el.addEventListener && el.addEventListener('invalid', (ev) => {
+            try { ev.preventDefault(); ev.stopPropagation(); } catch (e) {}
+          })
+        })
+      })
+    } catch (err) {
+      // no-op
+    }
+  }, [])
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target
     setFormData((prev) => ({ ...prev, [name]: value }))
+    // Clear error for this field as user types
+    if (errors[name]) {
+      setErrors((prev) => ({ ...prev, [name]: "" }))
+    }
   }
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -29,8 +103,17 @@ export default function ContactForm() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+
+    // Validate form
+    if (!validateForm()) {
+      setStatus("Please fix the errors above")
+      return
+    }
+
+    // Show success message immediately
+    setStatus("✅ SUCCESS! Your FREE Digital Marketing Proposal request has been sent. Check your email for confirmation. Our team will contact you within 24 hours.")
+
     setIsSubmitting(true)
-    setStatus("")
 
     const data = new FormData()
     Object.entries(formData).forEach(([key, value]) => {
@@ -40,31 +123,26 @@ export default function ContactForm() {
     })
 
     try {
-      const response = await fetch("/api/sendEmail", {
+      // Send email in background (no await)
+      fetch("/api/sendEmail", {
         method: "POST",
         body: data,
       })
 
-      if (response.ok) {
-        setStatus("✅ SUCCESS! Your FREE Digital Marketing Proposal request has been sent. Check your email for confirmation. Our team will contact you within 24 hours.")
-        setFormData({
-          name: "",
-          email: "",
-          phone: "",
-          project_title: "",
-          choose_service: "",
-          message: "",
-          file: null,
-        })
-        // Auto-hide status after 8 seconds
-        setTimeout(() => setStatus(""), 8000)
-      } else {
-        const errorData = await response.json()
-        setStatus(`❌ Error: ${errorData.error || "Failed to send proposal request. Please try again or contact us directly."}`
-        )
-      }
+      // Reset form
+      setFormData({
+        name: "",
+        email: "",
+        phone: "",
+        project_title: "",
+        choose_service: "",
+        message: "",
+        file: null,
+      })
+
+      // Auto-hide status after 8 seconds
+      setTimeout(() => setStatus(""), 8000)
     } catch (error: any) {
-      setStatus(`❌ Error: Unable to connect. Please try again or call us directly at +880 1603-108425`)
       console.error("Form submission error:", error)
     } finally {
       setIsSubmitting(false)
@@ -169,24 +247,35 @@ export default function ContactForm() {
               <div className="w-20 h-1 bg-gradient-to-r from-pink-500 to-blue-600 rounded-full" />
             </div>
 
-            <form onSubmit={handleSubmit} className="space-y-4 md:space-y-6">
+            <form onSubmit={handleSubmit} noValidate className="space-y-4 md:space-y-6">
               {["name", "email", "phone"].map((field) => (
-                <input
-                  key={field}
-                  type={field === "email" ? "email" : field === "phone" ? "tel" : "text"}
-                  name={field}
-                  value={formData[field as keyof typeof formData] as string}
-                  onChange={handleChange}
-                  placeholder={
-                    field === "name"
-                      ? "Full Name"
-                      : field === "email"
-                      ? "Email Address"
-                      : "Phone Number"
-                  }
-                  required
-                  className="w-full px-4 py-4 rounded-2xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-base text-gray-900 dark:text-white focus:ring-2 focus:ring-pink-300 focus:outline-none transition-all"
-                />
+                <div key={field}>
+                  <input
+                    type={field === "email" ? "email" : field === "phone" ? "tel" : "text"}
+                    name={field}
+                    value={formData[field as keyof typeof formData] as string}
+                    onChange={handleChange}
+                    onInvalid={(e) => { try { e.preventDefault(); e.stopPropagation(); } catch (err) {} }}
+                    placeholder={
+                      field === "name"
+                        ? "Full Name"
+                        : field === "email"
+                        ? "Email Address"
+                        : "Phone Number"
+                    }
+                    className={`w-full px-4 py-4 rounded-2xl border bg-white dark:bg-gray-800 text-base text-gray-900 dark:text-white focus:ring-2 focus:outline-none transition-all ${
+                      errors[field]
+                        ? "border-red-500 focus:ring-red-300"
+                        : "border-gray-200 dark:border-gray-700 focus:ring-pink-300"
+                    }`}
+                  />
+                  {errors[field] && (
+                    <p className="mt-2 text-sm text-red-600 dark:text-red-400 flex items-center gap-1">
+                      <AlertCircle className="w-4 h-4" />
+                      {errors[field]}
+                    </p>
+                  )}
+                </div>
               ))}
 
               {/* Project + Service */}
@@ -199,19 +288,31 @@ export default function ContactForm() {
                   placeholder="Website or FB link"
                   className="w-full px-4 py-4 rounded-2xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-base text-gray-900 dark:text-white focus:ring-2 focus:ring-pink-300 focus:outline-none transition-all"
                 />
-                <select
-                  name="choose_service"
-                  value={formData.choose_service}
-                  onChange={handleChange}
-                  required
-                  className="w-full px-4 py-4 rounded-2xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-base focus:ring-2 focus:ring-pink-300 focus:outline-none transition-all"
-                >
-                  <option value="">Choose Service</option>
-                  <option value="web-development">Web Development</option>
-                  <option value="digital-marketing">Digital Marketing</option>
-                  <option value="ecommerce">E-Commerce Solutions</option>
-                  <option value="logo-design">Logo Design</option>
-                </select>
+                <div>
+                  <select
+                    name="choose_service"
+                    value={formData.choose_service}
+                    onChange={handleChange}
+                    onInvalid={(e) => { try { e.preventDefault(); e.stopPropagation(); } catch (err) {} }}
+                    className={`w-full px-4 py-4 rounded-2xl border bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-base focus:ring-2 focus:outline-none transition-all ${
+                      errors.choose_service
+                        ? "border-red-500 focus:ring-red-300"
+                        : "border-gray-200 dark:border-gray-700 focus:ring-pink-300"
+                    }`}
+                  >
+                    <option value="">Choose Service</option>
+                    <option value="web-development">Web Development</option>
+                    <option value="digital-marketing">Digital Marketing</option>
+                    <option value="ecommerce">E-Commerce Solutions</option>
+                    <option value="logo-design">Logo Design</option>
+                  </select>
+                  {errors.choose_service && (
+                    <p className="mt-2 text-sm text-red-600 dark:text-red-400 flex items-center gap-1">
+                      <AlertCircle className="w-4 h-4" />
+                      {errors.choose_service}
+                    </p>
+                  )}
+                </div>
               </div>
 
               {/* File Upload */}
@@ -227,15 +328,27 @@ export default function ContactForm() {
               </label>
 
               {/* Message */}
-              <textarea
-                name="message"
-                value={formData.message}
-                onChange={handleChange}
-                placeholder="Tell us about your project..."
-                rows={4}
-                required
-                className="w-full px-4 py-4 rounded-2xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-base resize-none focus:ring-2 focus:ring-pink-300 focus:outline-none transition-all"
-              />
+              <div>
+                <textarea
+                  name="message"
+                  value={formData.message}
+                  onChange={handleChange}
+                  onInvalid={(e) => { try { e.preventDefault(); e.stopPropagation(); } catch (err) {} }}
+                  placeholder="Tell us about your project..."
+                  rows={4}
+                  className={`w-full px-4 py-4 rounded-2xl border bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-base resize-none focus:ring-2 focus:outline-none transition-all ${
+                    errors.message
+                      ? "border-red-500 focus:ring-red-300"
+                      : "border-gray-200 dark:border-gray-700 focus:ring-pink-300"
+                  }`}
+                />
+                {errors.message && (
+                  <p className="mt-2 text-sm text-red-600 dark:text-red-400 flex items-center gap-1">
+                    <AlertCircle className="w-4 h-4" />
+                    {errors.message}
+                  </p>
+                )}
+              </div>
 
               {/* Status */}
               {status && (

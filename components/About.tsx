@@ -45,27 +45,27 @@ export default function About() {
               </p>
               <h1
                 className="text-4xl lg:text-5xl font-bold text-gray-900 dark:text-white mb-6 animate-fade-in-up"
-                style={{ animationDelay: "300ms" }}
+                style={{ animationDelay: "300ms", fontSize: 'clamp(1.5rem, 3.2vw, 3rem)' }}
               >
-                Founder & CEO: Zahedul Islam
+                Boost Web Agency — Conversion-Focused Web Development & Digital Marketing
               </h1>
               <p
                 className="text-gray-600 dark:text-gray-300 text-lg leading-relaxed mb-4 animate-fade-in-up"
-                style={{ animationDelay: "400ms" }}
+                style={{ animationDelay: "400ms", fontSize: 'clamp(1rem, 1.8vw, 1.125rem)' }}
               >
-                I am Zahedul Islam, a passionate <span className="font-semibold text-gray-900 dark:text-white">Web Application Developer and Digital Marketer</span>. At Boost Web Agency, I lead a talented team dedicated to creating outstanding websites and digital solutions tailored to your needs.
+                Boost Web Agency builds fast, secure, and revenue-driven websites and marketing programs that turn visitors into customers. We design scalable React and e‑commerce platforms, implement SEO and analytics, and run growth campaigns that deliver measurable results for small and mid-sized businesses.
               </p>
               <p
                 className="text-gray-600 dark:text-gray-300 text-lg leading-relaxed animate-fade-in-up"
-                style={{ animationDelay: "400ms" }}
+                style={{ animationDelay: "400ms", fontSize: 'clamp(1rem, 1.8vw, 1.125rem)' }}
               >
-                With expertise in both technical development and strategic digital marketing, I combine creativity with technical expertise to deliver innovative solutions that enhance your online presence. My focus is on delivering high-quality results through strategic design, development, and marketing strategies.
+                Founded and led by Zahedul Islam, our team combines engineering precision with practical marketing to create digital products that perform. We focus on clear goals, transparent reporting, and fast iterations so your website becomes a predictable growth channel.
               </p>
             </div>
 
             {/* Features */}
             <div className="space-y-4">
-              {["Web Development Expertise", "Digital Marketing Strategy", "Commitment to Excellence"].map((feature, index) => (
+              {['Web Development Expertise', 'Digital Marketing Strategy', 'Commitment to Excellence'].map((feature, index) => (
                 <div
                   key={index}
                   className="flex items-center space-x-3 transform transition-all duration-500 hover:translate-x-2 animate-fade-in-up"

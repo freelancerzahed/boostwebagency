@@ -3,8 +3,8 @@ import type { Metadata } from "next"
 import dynamic from "next/dynamic"
 
 export const metadata: Metadata = {
-  title: "About Boost Web Agency - Meet Zahedul Islam, Founder & CEO",
-  description: "Learn about Boost Web Agency, founded by Zahedul Islam, a web application developer and digital marketing expert. Discover our mission, team, and commitment to building exceptional digital solutions.",
+  title: "Boost Web Agency — Web Development & Digital Marketing Agency",
+  description: "Boost Web Agency delivers conversion-focused web development, e‑commerce, and growth marketing. Founder-led, results-driven, and trusted by 60+ clients worldwide.",
   keywords: [
     "Zahedul Islam",
     "web developer",
@@ -16,12 +16,12 @@ export const metadata: Metadata = {
     "company culture",
   ],
   openGraph: {
-    type: "website",
-    locale: "en_US",
-    url: "https://boostwebagency.com/about",
-    title: "About Boost Web Agency - Founder Zahedul Islam",
-    description: "Learn about Boost Web Agency and founder Zahedul Islam, a web developer and digital marketing expert dedicated to building exceptional digital solutions.",
-    siteName: "Boost Web Agency",
+  type: "website",
+  locale: "en_US",
+  url: "https://boostwebagency.com/about",
+  title: "Boost Web Agency — Web Development & Digital Marketing Agency",
+  description: "Boost Web Agency delivers conversion-focused web development, e‑commerce, and growth marketing. Founder-led, results-driven, and trusted by 60+ clients worldwide.",
+  siteName: "Boost Web Agency",
     images: [
       {
         url: "https://boostwebagency.com/og-about.png",
@@ -33,8 +33,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "About Boost Web Agency - Founder Zahedul Islam",
-    description: "Learn about our founder Zahedul Islam and the story behind Boost Web Agency.",
+    title: "Boost Web Agency — Web Development & Digital Marketing Agency",
+    description: "Boost Web Agency delivers conversion-focused web development and growth marketing. Founder-led and results-driven.",
     creator: "@boostwebagency",
   },
   alternates: {

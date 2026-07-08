@@ -7,7 +7,7 @@ import { Home, ShoppingBag, Briefcase, Info, MessageCircle } from "lucide-react"
 
 const navigation = [
   { name: "Home", href: "/", icon: Home },
-  { name: "Shop", href: "/shop", icon: ShoppingBag },
+  { name: "Shop", href: "/shop", icon: ShoppingBag, hiddenOnMobile: true }, // hiddenOnMobile: toggle later
   { name: "Services", href: "/services", icon: Briefcase },
   { name: "About", href: "/about", icon: Info },
   { name: "Chat", href: "/chat", icon: MessageCircle },
@@ -16,12 +16,16 @@ const navigation = [
 const MobileBottomNav = memo(function MobileBottomNav() {
   const pathname = usePathname()
 
+  const visible = navigation.filter((item) => !item.hiddenOnMobile)
+
   return (
     <nav className="fixed bottom-0 left-0 right-0 z-50 bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-800 lg:hidden">
-      <div className="grid grid-cols-5 h-16">
-        {" "}
-        {/* Removed pb-safe from here */}
-        {navigation.map((item) => {
+      <div
+        className="grid h-16"
+        style={{ gridTemplateColumns: `repeat(${visible.length}, minmax(0, 1fr))` }}
+      >
+        {/* Render visible items so columns always distribute evenly */}
+        {visible.map((item) => {
           const isActive = pathname === item.href
 
           return (

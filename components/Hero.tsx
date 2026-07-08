@@ -207,13 +207,19 @@ export default function Hero() {
 
           {/* Improved Main Headline */}
           <div className="text-center mb-7 md:mb-9">
-            <h1 className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-black leading-[1.1] mb-5 md:mb-6 text-white tracking-tight">
+            <h1
+              className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-black leading-[1.1] mb-5 md:mb-6 text-white tracking-tight"
+              style={{ fontSize: 'clamp(1.75rem, 5vw, 4.5rem)' }}
+            >
               <span className="block mb-1">We Don't Just Build</span>
               <span className="block bg-gradient-to-r from-yellow-300 via-pink-300 to-blue-300 dark:from-yellow-400 dark:via-pink-400 dark:to-blue-400 bg-clip-text text-transparent">
                 We Engineer Success
               </span>
             </h1>
-            <p className="text-sm sm:text-base md:text-lg lg:text-xl text-white/85 dark:text-white/75 font-medium max-w-xs sm:max-w-sm md:max-w-2xl mx-auto leading-relaxed">
+            <p
+              className="text-sm sm:text-base md:text-lg lg:text-xl text-white/85 dark:text-white/75 font-medium max-w-xs sm:max-w-sm md:max-w-2xl mx-auto leading-relaxed"
+              style={{ fontSize: 'clamp(1rem, 2.2vw, 1.25rem)' }}
+            >
               Transform your vision into a profit-generating digital powerhouse that dominates your competition.
             </p>
           </div>
@@ -319,7 +325,10 @@ export default function Hero() {
                 href="/contact"
                 className="group relative overflow-hidden bg-gradient-to-r from-pink-500 to-blue-600 hover:from-pink-600 hover:to-blue-700 dark:from-pink-600 dark:to-blue-700 dark:hover:from-pink-700 dark:hover:to-blue-800 text-white font-bold py-4 px-6 rounded-2xl transition-all duration-300 transform hover:scale-[1.02] hover:shadow-2xl flex-1 text-center active:scale-95 touch-manipulation shadow-lg"
               >
-                <span className="relative z-10 flex items-center justify-center gap-2 text-sm md:text-base">
+                  <span
+                    className="relative z-10 flex items-center justify-center gap-2 text-sm md:text-base"
+                    style={{ fontSize: 'clamp(0.9rem, 1.6vw, 1rem)' }}
+                  >
                   Start Your Success Story
                   <ArrowRight className="w-4 h-4 md:w-5 md:h-5 group-hover:translate-x-1 transition-transform" />
                 </span>
@@ -333,7 +342,9 @@ export default function Hero() {
                 <div className="w-8 h-8 bg-white/15 dark:bg-white/10 rounded-full flex items-center justify-center group-hover:bg-white/25 dark:group-hover:bg-white/15 transition-colors">
                   <Play className="w-4 h-4 ml-0.5" />
                 </div>
-                <span className="text-sm md:text-base">Watch Success Stories</span>
+                <span className="text-sm md:text-base" style={{ fontSize: 'clamp(0.9rem, 1.6vw, 1rem)' }}>
+                  Watch Success Stories
+                </span>
               </button>
             </div>
           </div>

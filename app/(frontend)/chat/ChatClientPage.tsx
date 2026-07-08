@@ -46,6 +46,7 @@ export default function ChatClientPage() {
   })
   const [status, setStatus] = useState("")
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [errors, setErrors] = useState<Record<string, string>>({})
 
   // State for Chatbot Modal
   const [showChatModal, setShowChatModal] = useState(false)
@@ -173,9 +174,47 @@ export default function ChatClientPage() {
   }
 
   // Handlers for Contact Form
+  const validateForm = () => {
+    const newErrors: Record<string, string> = {}
+
+    // Name validation
+    if (!formData.name.trim()) {
+      newErrors.name = "Full name is required"
+    } else if (formData.name.trim().length < 2) {
+      newErrors.name = "Name must be at least 2 characters"
+    }
+
+    // Email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    if (!formData.email.trim()) {
+      newErrors.email = "Email address is required"
+    } else if (!emailRegex.test(formData.email)) {
+      newErrors.email = "Please enter a valid email address"
+    }
+
+    // Service validation
+    if (!formData.choose_service) {
+      newErrors.choose_service = "Please select a service"
+    }
+
+    // Message validation
+    if (!formData.message.trim()) {
+      newErrors.message = "Please tell us about your project"
+    } else if (formData.message.trim().length < 10) {
+      newErrors.message = "Message must be at least 10 characters"
+    }
+
+    setErrors(newErrors)
+    return Object.keys(newErrors).length === 0
+  }
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target
     setFormData((prev) => ({ ...prev, [name]: value }))
+    // Clear error for this field when user starts typing
+    if (errors[name]) {
+      setErrors((prev) => ({ ...prev, [name]: "" }))
+    }
   }
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -185,7 +224,15 @@ export default function ChatClientPage() {
 
   const handleContactFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    
+    // Validate form before submitting
+    if (!validateForm()) {
+      setStatus("Please fix the errors above")
+      return
+    }
+
     setIsSubmitting(true)
+    setStatus("")
 
     const data = new FormData()
     Object.entries(formData).forEach(([key, value]) => {
@@ -195,28 +242,29 @@ export default function ChatClientPage() {
     })
 
     try {
-      const response = await fetch("/api/sendEmail", {
+      // Show success message immediately
+      setStatus("✓ Thank you! Your message has been received. We'll get back to you soon.")
+      setFormData({
+        name: "",
+        email: "",
+        phone: "",
+        project_title: "",
+        choose_service: "",
+        message: "",
+        file: null,
+      })
+      setErrors({})
+      setIsSubmitting(false)
+
+      // Send email in background (don't wait for response)
+      fetch("/api/sendEmail", {
         method: "POST",
         body: data,
+      }).catch((error) => {
+        console.error("Email sending error:", error)
       })
-
-      if (response.ok) {
-        setStatus("Thank you for your message! We'll get back to you soon.")
-        setFormData({
-          name: "",
-          email: "",
-          phone: "",
-          project_title: "",
-          choose_service: "",
-          message: "",
-          file: null,
-        })
-      } else {
-        setStatus("Failed to send message. Please try again.")
-      }
     } catch (error) {
-      setStatus("Failed to send message. Please try again.")
-    } finally {
+      setStatus("✗ There was an error. Please try again.")
       setIsSubmitting(false)
     }
   }
@@ -439,7 +487,7 @@ export default function ChatClientPage() {
                   <div className="w-20 h-1 bg-gradient-to-r from-pink-500 to-blue-600 rounded-full" />
                 </div>
 
-                <form onSubmit={handleContactFormSubmit} className="space-y-5 sm:space-y-6">
+                <form onSubmit={handleContactFormSubmit} noValidate className="space-y-5 sm:space-y-6">
                   {/* Name, Email, Phone */}
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                     {["name", "email", "phone"].map((field) => (
@@ -450,11 +498,19 @@ export default function ChatClientPage() {
                           value={formData[field as keyof typeof formData] as string}
                           onChange={handleChange}
                           placeholder={
-                            field === "name" ? "Full Name" : field === "email" ? "Email Address" : "Phone Number"
+                            field === "name" ? "Full Name" : field === "email" ? "Email Address" : "Phone Number (Optional)"
                           }
-                          required
-                          className="w-full px-4 py-3 sm:py-4 rounded-lg sm:rounded-xl border-2 border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:border-pink-500 dark:focus:border-pink-400 focus:ring-0 outline-none transition-all duration-300 placeholder-gray-500 dark:placeholder-gray-400 text-sm sm:text-base"
+                          className={`w-full px-4 py-3 sm:py-4 rounded-lg sm:rounded-xl border-2 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:border-pink-500 dark:focus:border-pink-400 focus:ring-0 outline-none transition-all duration-300 placeholder-gray-500 dark:placeholder-gray-400 text-sm sm:text-base ${
+                            errors[field]
+                              ? "border-red-500 dark:border-red-500"
+                              : "border-gray-200 dark:border-gray-700"
+                          }`}
                         />
+                        {errors[field] && (
+                          <p className="mt-1 text-xs sm:text-sm text-red-500 dark:text-red-400 flex items-center gap-1">
+                            <span>⚠</span> {errors[field]}
+                          </p>
+                        )}
                       </div>
                     ))}
                   </div>
@@ -473,8 +529,11 @@ export default function ChatClientPage() {
                       name="choose_service"
                       value={formData.choose_service}
                       onChange={handleChange}
-                      required
-                      className="w-full px-4 py-3 sm:py-4 rounded-lg sm:rounded-xl border-2 border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:border-pink-500 dark:focus:border-pink-400 focus:ring-0 outline-none transition-all duration-300 text-sm sm:text-base"
+                      className={`w-full px-4 py-3 sm:py-4 rounded-lg sm:rounded-xl border-2 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:border-pink-500 dark:focus:border-pink-400 focus:ring-0 outline-none transition-all duration-300 text-sm sm:text-base ${
+                        errors.choose_service
+                          ? "border-red-500 dark:border-red-500"
+                          : "border-gray-200 dark:border-gray-700"
+                      }`}
                     >
                       <option value="">Choose Service</option>
                       <option value="web-development">Web Development</option>
@@ -482,6 +541,11 @@ export default function ChatClientPage() {
                       <option value="ecommerce">E-Commerce Solutions</option>
                       <option value="logo-design">Logo Design</option>
                     </select>
+                    {errors.choose_service && (
+                      <p className="mt-1 text-xs sm:text-sm text-red-500 dark:text-red-400 flex items-center gap-1">
+                        <span>⚠</span> {errors.choose_service}
+                      </p>
+                    )}
                   </div>
 
                   {/* File Upload */}
@@ -499,26 +563,37 @@ export default function ChatClientPage() {
                   </label>
 
                   {/* Message */}
-                  <textarea
-                    name="message"
-                    value={formData.message}
-                    onChange={handleChange}
-                    placeholder="Tell us about your project goals and requirements..."
-                    rows={4}
-                    required
-                    className="w-full px-4 py-3 sm:py-4 rounded-lg sm:rounded-xl border-2 border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white resize-none focus:border-pink-500 dark:focus:border-pink-400 focus:ring-0 outline-none transition-all duration-300 placeholder-gray-500 dark:placeholder-gray-400 text-sm sm:text-base"
-                  />
+                  <div>
+                    <textarea
+                      name="message"
+                      value={formData.message}
+                      onChange={handleChange}
+                      placeholder="Tell us about your project goals and requirements..."
+                      rows={4}
+                      className={`w-full px-4 py-3 sm:py-4 rounded-lg sm:rounded-xl border-2 bg-white dark:bg-gray-800 text-gray-900 dark:text-white resize-none focus:border-pink-500 dark:focus:border-pink-400 focus:ring-0 outline-none transition-all duration-300 placeholder-gray-500 dark:placeholder-gray-400 text-sm sm:text-base ${
+                        errors.message
+                          ? "border-red-500 dark:border-red-500"
+                          : "border-gray-200 dark:border-gray-700"
+                      }`}
+                    />
+                    {errors.message && (
+                      <p className="mt-1 text-xs sm:text-sm text-red-500 dark:text-red-400 flex items-center gap-1">
+                        <span>⚠</span> {errors.message}
+                      </p>
+                    )}
+                  </div>
 
                   {/* Status */}
                   {status && (
                     <div
-                      className={`p-4 rounded-xl border text-sm sm:text-base ${
-                        status.includes("Thank you")
+                      className={`p-4 rounded-xl border text-sm sm:text-base flex items-center gap-3 ${
+                        status.includes("✓")
                           ? "bg-green-50 dark:bg-green-900/20 border-green-200 dark:border-green-800 text-green-700 dark:text-green-300"
                           : "bg-red-50 dark:bg-red-900/20 border-red-200 dark:border-red-800 text-red-700 dark:text-red-300"
                       }`}
                     >
-                      {status}
+                      <span className="text-lg font-bold">{status.includes("✓") ? "✓" : "✗"}</span>
+                      <span>{status.replace("✓ ", "").replace("✗ ", "")}</span>
                     </div>
                   )}
 

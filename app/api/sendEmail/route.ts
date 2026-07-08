@@ -1,26 +1,42 @@
 import nodemailer from "nodemailer"
 import { NextRequest, NextResponse } from "next/server"
-import emailConfig from "../../../config/email.config.mjs"
+import emailConfig from "../../../config/email.config"
 
 // Configure email transporter
-const getTransporter = () => {
+const getTransporter = async () => {
   // Support both environment variables and a local config file
   const EMAIL_TEST_MODE = (emailConfig.EMAIL_TEST_MODE === "true" || emailConfig.EMAIL_TEST_MODE === true)
   const EMAIL_USER = emailConfig.EMAIL_USER
+  const EMAIL_PASSWORD = emailConfig.EMAIL_PASSWORD
 
-  // Check if we're in test mode or missing credentials
-  if (EMAIL_TEST_MODE || !EMAIL_USER) {
+  if (EMAIL_TEST_MODE) {
     console.log("📧 Email Test Mode: Emails will be logged but not sent")
     return null
   }
 
-  return nodemailer.createTransport({
+  if (!EMAIL_USER || !EMAIL_PASSWORD) {
+    throw new Error("Missing SMTP credentials. Set EMAIL_USER and EMAIL_PASSWORD.")
+  }
+
+  const transporter = nodemailer.createTransport({
     service: "gmail",
     auth: {
       user: EMAIL_USER,
-      pass: emailConfig.EMAIL_PASSWORD,
+      pass: EMAIL_PASSWORD,
     },
+    // Improve email authentication and deliverability
+    connectionUrl: process.env.SMTP_CONNECTION_URL,
   })
+
+  try {
+    await transporter.verify()
+    console.log("📧 SMTP transporter verified successfully")
+  } catch (verifyError) {
+    console.error("SMTP verification failed:", verifyError)
+    throw verifyError
+  }
+
+  return transporter
 }
 
 export async function POST(request: NextRequest) {
@@ -37,7 +53,7 @@ export async function POST(request: NextRequest) {
     const file = formData.get("file") as File | null
 
     // Validate required fields
-    if (!name || !email || !phone || !choose_service || !message) {
+    if (!name || !email || !choose_service || !message) {
       return NextResponse.json(
         { error: "Missing required fields" },
         { status: 400 }
@@ -54,109 +70,196 @@ export async function POST(request: NextRequest) {
       })
     }
 
-    const transporter = getTransporter()
+    const transporter = await getTransporter()
     const isTestMode = transporter === null
+
+    if (isTestMode) {
+      throw new Error("Email Test Mode is enabled or SMTP credentials are missing. Set proper Gmail credentials to send real email.")
+    }
+
+    const fromEmail = emailConfig.EMAIL_USER || "boostwebagency.info@gmail.com"
+    const replyToEmail = emailConfig.EMAIL_USER || "boostwebagency.info@gmail.com"
 
     // Email to client
     const clientMailOptions = {
-      from: emailConfig.EMAIL_USER || "boostwebagency.info@gmail.com",
+      from: fromEmail,
       to: email,
-      subject: "Your FREE Digital Marketing Proposal - Boost Web Agency",
-      html: `
-        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-          <div style="background: linear-gradient(135deg, #ec4899 0%, #2563eb 100%); color: white; padding: 20px; border-radius: 8px; text-align: center;">
-            <h1 style="margin: 0;">Thank You, ${name}!</h1>
-          </div>
+      subject: `Contact form submission confirmation`,
+      headers: {
+        'X-Priority': '3',
+      },
+      text: `Hello ${name},
+
+Thank you for your message. We have received your request and will respond within 24 hours.
+
+Service: ${choose_service.replace(/-/g, " ")}
+${project_title ? `Project: ${project_title}` : ""}
+
+You can also reach us:
+Website: https://boostwebagency.com
+WhatsApp: +880 1603-108425
+
+Best regards,
+Boost Web Agency`,
+      html: `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact Confirmation</title>
+</head>
+<body style="margin: 0; padding: 0; font-family: Arial, sans-serif; background-color: #f5f5f5;">
+  <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background-color: #f5f5f5;">
+    <tr><td style="padding: 20px;">
+      <table role="presentation" width="100%" style="max-width: 600px; margin: 0 auto; background-color: white;">
+        <tr><td style="background-color: #ec4899; padding: 40px 30px; text-align: center; color: white;">
+          <h1 style="margin: 0; font-size: 28px; font-weight: 800;">Boost Web Agency</h1>
+          <p style="margin: 8px 0 0 0; font-size: 15px; color: rgba(255,255,255,0.95);">Thank You for Your Interest!</p>
+        </td></tr>
+        <tr><td style="height: 4px; background-color: #a855f7;"></td></tr>
+        <tr><td style="padding: 40px 30px; font-size: 16px; line-height: 1.6; color: #1f2937;">
+          <p style="margin: 0 0 20px 0;">👋 Hello <strong style="color: #ec4899;">${name}</strong>,</p>
+          <p style="margin: 0 0 25px 0; color: #4b5563;">We've received your request and are excited to help! Our team is reviewing your submission and will get back to you within <strong>24 hours</strong>.</p>
           
-          <div style="padding: 30px; background-color: #f9fafb;">
-            <p style="color: #374151; font-size: 16px; line-height: 1.6;">
-              Thank you for requesting your FREE Digital Marketing Proposal from <strong>Boost Web Agency</strong>!
-            </p>
+          <table role="presentation" width="100%" style="background-color: #fdf2f8; border: 1px solid #f3e8ff; margin: 25px 0;">
+            <tr><td style="padding: 20px;">
+              <p style="margin: 0 0 15px 0; color: #a855f7; font-size: 12px; text-transform: uppercase; font-weight: 700;">📋 YOUR REQUEST</p>
+              <table width="100%">
+                <tr><td style="padding: 8px 0; color: #6b7280;"><strong>Service:</strong></td><td style="padding: 8px 0; color: #ec4899; font-weight: 600;">${choose_service.replace(/-/g, " ")}</td></tr>
+                ${project_title ? `<tr><td style="padding: 8px 0; color: #6b7280;"><strong>Project:</strong></td><td style="padding: 8px 0;">${project_title}</td></tr>` : ""}
+                <tr><td style="padding: 8px 0; color: #6b7280;"><strong>Status:</strong></td><td style="padding: 8px 0; color: #16a34a; font-weight: 600;">✓ Received</td></tr>
+              </table>
+            </td></tr>
+          </table>
 
-            <h2 style="color: #1f2937; margin-top: 20px;">Your Submission Details:</h2>
-            <div style="background-color: white; border-left: 4px solid #ec4899; padding: 15px; margin: 15px 0; border-radius: 4px;">
-              <p><strong>Name:</strong> ${name}</p>
-              <p><strong>Email:</strong> ${email}</p>
-              <p><strong>Phone:</strong> ${phone}</p>
-              <p><strong>Service Requested:</strong> ${choose_service.replace(/-/g, " ").toUpperCase()}</p>
-              ${project_title ? `<p><strong>Project:</strong> ${project_title}</p>` : ""}
-            </div>
+          <table role="presentation" width="100%" style="background-color: #f0f9ff; border-left: 4px solid #2563eb; margin: 25px 0;">
+            <tr><td style="padding: 20px;">
+              <p style="margin: 0 0 12px 0; color: #1e40af; font-weight: 700;">⏭️ What Happens Next</p>
+              <ol style="margin: 0; padding-left: 20px; color: #4b5563; line-height: 1.8;">
+                <li style="margin-bottom: 6px;">Our team reviews your request</li>
+                <li style="margin-bottom: 6px;">We prepare a personalized proposal</li>
+                <li>You'll hear from us within 24 hours</li>
+              </ol>
+            </td></tr>
+          </table>
 
-            <h2 style="color: #1f2937; margin-top: 20px;">What's Next?</h2>
-            <ol style="color: #374151; line-height: 1.8; font-size: 14px;">
-              <li>Our team will review your request within 24 hours</li>
-              <li>We'll prepare a customized proposal based on your needs</li>
-              <li>You'll receive the proposal via email with detailed recommendations</li>
-              <li>We'll follow up to discuss and answer any questions</li>
-            </ol>
+          <table role="presentation" width="100%" style="margin: 30px 0;">
+            <tr><td align="center"><a href="https://boostwebagency.com" style="display: inline-block; background-color: #ec4899; color: white; padding: 14px 32px; border-radius: 6px; font-weight: 600; text-decoration: none;">Explore Our Services</a></td></tr>
+          </table>
 
-            <div style="background-color: #fef3c7; border: 1px solid #fbbf24; border-radius: 8px; padding: 15px; margin: 20px 0; text-align: center;">
-              <p style="color: #92400e; font-weight: bold; margin: 0;">
-                💡 In the meantime, check out our <strong>portfolio</strong> at <a href="https://boostwebagency.com" style="color: #ec4899; text-decoration: none;">boostwebagency.com</a>
-              </p>
-            </div>
+          <table role="presentation" width="100%" style="background-color: #f9f5ff; margin: 25px 0;">
+            <tr><td style="padding: 20px;">
+              <p style="margin: 0 0 12px 0; color: #7c3aed; font-size: 12px; text-transform: uppercase; font-weight: 700;">⚡ Need Help Fast?</p>
+              <table width="100%">
+                <tr><td style="padding: 8px 0;"><strong>WhatsApp:</strong> <a href="https://wa.me/8801603108425" style="color: #ec4899;">+880 1603-108425</a></td></tr>
+                <tr><td style="padding: 8px 0;"><strong>Email:</strong> <a href="mailto:boostwebagency.contact@gmail.com" style="color: #ec4899;">boostwebagency.contact@gmail.com</a></td></tr>
+              </table>
+            </td></tr>
+          </table>
 
-            <h2 style="color: #1f2937; margin-top: 20px;">Quick Links:</h2>
-            <ul style="color: #374151; font-size: 14px; line-height: 1.8;">
-              <li>📞 Call us: <a href="tel:+8801603108425" style="color: #ec4899; text-decoration: none;">+880 1603-108425</a></li>
-              <li>📧 Email us: <a href="mailto:boostwebagency.info@gmail.com" style="color: #ec4899; text-decoration: none;">boostwebagency.info@gmail.com</a></li>
-              <li>🌐 Visit us: <a href="https://boostwebagency.com" style="color: #ec4899; text-decoration: none;">boostwebagency.com</a></li>
-            </ul>
-          </div>
-
-          <div style="background-color: #1f2937; color: white; text-align: center; padding: 20px; border-radius: 8px; margin-top: 20px;">
-            <p style="margin: 0; font-size: 12px;">
-              © 2024 Boost Web Agency. All rights reserved.
-            </p>
-            <p style="margin: 5px 0 0 0; font-size: 12px;">
-              We look forward to helping your business grow!
-            </p>
-          </div>
-        </div>
-      `,
+          <p style="margin: 25px 0 0 0; color: #4b5563;">Best regards,<br><strong style="color: #ec4899;">Boost Web Agency Team</strong></p>
+        </td></tr>
+        <tr><td style="background-color: #1f2937; padding: 25px 30px; text-align: center; color: rgba(255,255,255,0.8); font-size: 12px;">
+          <p style="margin: 0 0 8px 0;">© 2024 Boost Web Agency. All rights reserved.</p>
+          <p style="margin: 0; color: rgba(255,255,255,0.6);">Dhaka, Bangladesh | <a href="https://boostwebagency.com" style="color: #ec4899; text-decoration: none;">boostwebagency.com</a></p>
+        </td></tr>
+      </table>
+    </td></tr>
+  </table>
+</body>
+</html>`,
     }
 
     // Email to company
     const companyMailOptions = {
-      from: emailConfig.EMAIL_USER || "boostwebagency.info@gmail.com",
+      from: fromEmail,
       to: emailConfig.COMPANY_EMAIL || "boostwebagency.info@gmail.com",
-      subject: `NEW Proposal Request: ${choose_service} - ${name}`,
-      html: `
-        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-          <div style="background: linear-gradient(135deg, #ec4899 0%, #2563eb 100%); color: white; padding: 20px; border-radius: 8px; text-align: center;">
-            <h1 style="margin: 0;">🎉 New Proposal Request Received!</h1>
-          </div>
-          
-          <div style="padding: 30px; background-color: #f9fafb;">
-            <h2 style="color: #1f2937;">Client Information:</h2>
-            <div style="background-color: white; border-left: 4px solid #2563eb; padding: 15px; margin: 15px 0; border-radius: 4px;">
-              <p><strong>Name:</strong> ${name}</p>
-              <p><strong>Email:</strong> <a href="mailto:${email}" style="color: #2563eb; text-decoration: none;">${email}</a></p>
-              <p><strong>Phone:</strong> <a href="tel:${phone}" style="color: #2563eb; text-decoration: none;">${phone}</a></p>
-            </div>
+      subject: `New contact form: ${name}`,
+      headers: {
+        'X-Priority': '2',
+      },
+      text: `New message from ${name}
 
-            <h2 style="color: #1f2937;">Project Details:</h2>
-            <div style="background-color: white; border-left: 4px solid #ec4899; padding: 15px; margin: 15px 0; border-radius: 4px;">
-              <p><strong>Service:</strong> ${choose_service.replace(/-/g, " ").toUpperCase()}</p>
-              ${project_title ? `<p><strong>Project URL/Title:</strong> ${project_title}</p>` : ""}
-              <p><strong>Message:</strong></p>
-              <p style="background-color: #f3f4f6; padding: 10px; border-radius: 4px; white-space: pre-wrap;">${message}</p>
-            </div>
+Email: ${email}
+${phone ? `Phone: ${phone}` : ""}
+Service: ${choose_service.replace(/-/g, " ")}
+${project_title ? `Project: ${project_title}` : ""}
 
-            <div style="text-align: center; margin-top: 20px;">
-              <a href="mailto:${email}?subject=Re: Your Digital Marketing Proposal" style="display: inline-block; background: linear-gradient(135deg, #ec4899 0%, #2563eb 100%); color: white; padding: 12px 24px; border-radius: 6px; text-decoration: none; font-weight: bold;">
-                Reply to ${name}
-              </a>
-            </div>
-          </div>
+Message:
+${message}`,
+      html: `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>New Lead Alert</title>
+</head>
+<body style="margin: 0; padding: 0; font-family: Arial, sans-serif; background-color: #f5f5f5;">
+  <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background-color: #f5f5f5;">
+    <tr><td style="padding: 20px;">
+      <table role="presentation" width="100%" style="max-width: 600px; margin: 0 auto; background-color: white;">
+        <tr><td style="background-color: #ec4899; padding: 40px 30px; text-align: center; color: white;">
+          <h1 style="margin: 0; font-size: 32px; font-weight: 800;">🎯 NEW LEAD</h1>
+          <p style="margin: 8px 0 0 0; font-size: 14px; color: rgba(255,255,255,0.95);">Contact Form Submission</p>
+        </td></tr>
+        <tr><td style="height: 4px; background-color: #a855f7;"></td></tr>
+        <tr><td style="padding: 40px 30px; color: #1f2937;">
+          <p style="margin: 0 0 5px 0; font-size: 16px;"><strong>${name}</strong> just submitted a request</p>
+          <p style="margin: 0 0 25px 0; color: #6b7280; font-size: 13px;">${new Date().toLocaleString()}</p>
 
-          <div style="background-color: #f3f4f6; border: 1px solid #e5e7eb; border-radius: 8px; padding: 15px; margin-top: 20px;">
-            <p style="color: #6b7280; font-size: 12px; margin: 0;">
-              ${file ? `<strong>File attached:</strong> ${file.name}` : "No file attached"}
-            </p>
-          </div>
-        </div>
-      `,
+          <table role="presentation" width="100%" style="background-color: #f0f9ff; border: 1px solid #bfdbfe; margin: 20px 0;">
+            <tr><td style="padding: 20px;">
+              <p style="margin: 0 0 12px 0; color: #2563eb; font-size: 12px; text-transform: uppercase; font-weight: 700;">👤 CLIENT INFO</p>
+              <table width="100%">
+                <tr><td style="padding: 8px 0; color: #6b7280; width: 35%;"><strong>Name:</strong></td><td style="padding: 8px 0;">${name}</td></tr>
+                <tr><td style="padding: 8px 0; color: #6b7280;"><strong>Email:</strong></td><td style="padding: 8px 0;"><a href="mailto:${email}" style="color: #2563eb; font-weight: 600;">${email}</a></td></tr>
+                ${phone ? `<tr><td style="padding: 8px 0; color: #6b7280;"><strong>Phone:</strong></td><td style="padding: 8px 0;"><a href="tel:${phone}" style="color: #2563eb; font-weight: 600;">${phone}</a></td></tr>` : ""}
+              </table>
+            </td></tr>
+          </table>
+
+          <table role="presentation" width="100%" style="background-color: #fef2f8; border: 1px solid #fbcfe8; margin: 20px 0;">
+            <tr><td style="padding: 20px;">
+              <p style="margin: 0 0 12px 0; color: #ec4899; font-size: 12px; text-transform: uppercase; font-weight: 700;">🎨 SERVICE</p>
+              <table width="100%">
+                <tr><td style="padding: 8px 0; color: #6b7280; width: 35%;"><strong>Service:</strong></td><td style="padding: 8px 0; color: #be185d; font-weight: 600;">${choose_service.replace(/-/g, " ").toUpperCase()}</td></tr>
+                ${project_title ? `<tr><td style="padding: 8px 0; color: #6b7280;"><strong>Project:</strong></td><td style="padding: 8px 0;">${project_title}</td></tr>` : ""}
+              </table>
+            </td></tr>
+          </table>
+
+          <table role="presentation" width="100%" style="background-color: #f3f4f6; border-left: 4px solid #a855f7; margin: 20px 0;">
+            <tr><td style="padding: 20px;">
+              <p style="margin: 0 0 12px 0; color: #4b5563; font-size: 12px; text-transform: uppercase; font-weight: 700;">💬 MESSAGE</p>
+              <p style="margin: 0; color: #1f2937; font-size: 14px; line-height: 1.6; white-space: pre-wrap; word-wrap: break-word;">${message}</p>
+            </td></tr>
+          </table>
+
+          <table role="presentation" width="100%" style="margin: 30px 0;">
+            <tr>
+              <td style="width: 48%; padding-right: 4%;">
+                <table width="100%"><tr><td align="center" style="background-color: #ec4899; padding: 12px; border-radius: 6px;"><a href="mailto:${email}?subject=Re: Your Service Request" style="color: white; font-weight: 600; text-decoration: none;">📧 Reply</a></td></tr></table>
+              </td>
+              <td style="width: 48%;">
+                <table width="100%"><tr><td align="center" style="background-color: #25d366; padding: 12px; border-radius: 6px;"><a href="https://wa.me/${phone?.replace(/[^0-9]/g, '') || '8801603108425'}" style="color: white; font-weight: 600; text-decoration: none;">💬 WhatsApp</a></td></tr></table>
+              </td>
+            </tr>
+          </table>
+
+          <table role="presentation" width="100%" style="background-color: #fffbeb; border-left: 4px solid #f59e0b; margin: 20px 0;">
+            <tr><td style="padding: 15px 20px;">
+              <p style="margin: 0; color: #92400e; font-size: 13px; font-weight: 600;">⏱️ Respond within 24 hours for best results!</p>
+            </td></tr>
+          </table>
+        </td></tr>
+        <tr><td style="background-color: #1f2937; padding: 25px 30px; text-align: center; color: rgba(255,255,255,0.6); font-size: 12px;">
+          <p style="margin: 0;">Lead ID: ${Date.now()} • Boost Web Agency</p>
+        </td></tr>
+      </table>
+    </td></tr>
+  </table>
+</body>
+</html>`,
       attachments: attachments,
     }
 
@@ -176,9 +279,45 @@ export async function POST(request: NextRequest) {
         { status: 200 }
       )
     } else {
-      // Send both emails
-      await transporter!.sendMail(clientMailOptions)
-      await transporter!.sendMail(companyMailOptions)
+      // Send the client email first and verify it was accepted by SMTP
+      try {
+        const clientResult = await transporter!.sendMail(clientMailOptions)
+        console.log("✅ Email sent to client:", {
+          recipient: email,
+          messageId: clientResult.messageId,
+          accepted: clientResult.accepted,
+          rejected: clientResult.rejected,
+          response: clientResult.response
+        })
+
+        if (clientResult.rejected.length > 0) {
+          console.error("❌ Client email was rejected by SMTP:", clientResult.rejected)
+          throw new Error(`Client email rejected: ${clientResult.rejected.join(", ")}`)
+        }
+      } catch (clientError) {
+        console.error("❌ Error sending client email:", clientError)
+        throw new Error(`Failed to send client email: ${(clientError as any).message}`)
+      }
+
+      // Send the company notification email next
+      try {
+        const companyResult = await transporter!.sendMail(companyMailOptions)
+        console.log("✅ Email sent to company:", {
+          recipient: emailConfig.COMPANY_EMAIL || "boostwebagency.info@gmail.com",
+          messageId: companyResult.messageId,
+          accepted: companyResult.accepted,
+          rejected: companyResult.rejected,
+          response: companyResult.response
+        })
+
+        if (companyResult.rejected.length > 0) {
+          console.error("❌ Company email was rejected by SMTP:", companyResult.rejected)
+          throw new Error(`Company email rejected: ${companyResult.rejected.join(", ")}`)
+        }
+      } catch (companyError) {
+        console.error("❌ Error sending company email:", companyError)
+        throw new Error(`Failed to send company email: ${(companyError as any).message}`)
+      }
 
       return NextResponse.json(
         {
